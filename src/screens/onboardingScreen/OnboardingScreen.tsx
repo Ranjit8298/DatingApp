@@ -2,39 +2,22 @@ import React from "react";
 import { SafeAreaView, View, StyleSheet, Text, TouchableOpacity, FlatList, Image, StatusBar } from 'react-native';
 import constants from "../../constants";
 import CustomButton from "../../components/CustomButton";
+import Lottie from 'lottie-react-native';
 
-const OnboardingScreen = () => {
+interface props {
+  navigation: any;
+}
+
+const OnboardingScreen = (props: props) => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle={'light-content'} />
-      <FlatList
-        data={slides}
-        showsHorizontalScrollIndicator={false}
-        horizontal
-        snapToAlignment="start"
-        pagingEnabled
-        scrollEventThrottle={16}
-        viewabilityConfig={{
-          itemVisiblePercentThreshold: 100,
-        }}
-        renderItem={({ item }) => (
-          <View>
-            <Image
-              style={styles.imageStyle}
-              source={item.image} />
-            <Text style={styles.headerTxt}>{item.title}</Text>
-            <Text style={styles.headerTxtSummary}>{item.text}</Text>
-          </View>
 
-        )}
-      />
-
+      <Lottie style={{ marginTop: constants.vh(-70) }}
+        source={require('../../assets/raw/onboarding_dating.json')} autoPlay loop />
+      <Text style={styles.txtParagraph}>{'Users going through a vetting process to ensure you never match with bots.'}</Text>
       <View style={styles.absoluteView}>
-        <CustomButton onPress={() => { }} txt={constants.string.createAccount} />
-
-        <Text style={styles.alreadyTxt}>{constants.string.alreadyHaveAnAcc}
-          <Text style={styles.signInTxt}>{constants.string.signIn}</Text>
-        </Text>
+        <CustomButton onPress={() => { props.navigation.navigate('CheckedInScreen') }} txt={constants.string.getStarted} />
       </View>
 
     </SafeAreaView>
@@ -49,15 +32,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     marginTop: constants.vh(650),
     alignSelf: 'center'
-  },
-  alreadyTxt: {
-    alignSelf: 'center',
-    marginTop: constants.vh(20),
-    fontSize: constants.vh(14),
-    color: constants.colors.primary70
-  },
-  signInTxt: {
-    color: constants.colors.colorPrimary,
   },
   imageStyle: {
     width: constants.vw(235),
@@ -85,6 +59,16 @@ const styles = StyleSheet.create({
     lineHeight: constants.vh(18),
     marginTop: constants.vh(10),
     color: constants.colors.secondary
+  },
+  txtParagraph: {
+    position: 'absolute',
+    bottom: constants.vh(210),
+    width: constants.vw(335),
+    alignSelf: 'center',
+    color: constants.colors.secondary,
+    fontWeight: 'bold',
+    fontSize: constants.vw(16),
+    textAlign: 'center'
   }
 });
 

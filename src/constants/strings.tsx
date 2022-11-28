@@ -1,6 +1,26 @@
 export default {
     createAccount: 'Create an account',
     alreadyHaveAnAcc:'Already have an account? ',
-    signIn:'Sign In'
+    signIn:'Sign In',
+    getStarted:'Get Started',
+    checkedIn:'Checked In',
+    chatTxt:'Flirt, chat and meet people around you',
+    signUpTxt:'SIGN UP NOW',
+    loginTxt:'Login',
+    emailTxt:'EMAIL ADDRESS/PHONE NUMBER',
+    enterEmailTxt:'Enter Email or Phone Number',
+    password:'Password',
+    enterPass:'Enter Password',
+    forgotPass:'Forgot Password',
+    dontHaveAcc:'Don’t have an account?',
+    signUp:'Sign Up',
+    mobileNumber:'Mobile Number',
+    enterMobileNum:'Enter your mobile number',
+    alreadyAMamber:'Already a member?',
+    basicInfo:'Basic Information',
+    firstName:'First Name',
+    enterFirstName:'Enter First Name',
+    submit:'Submit',
+    selectDate:'Select Date',
   };
   

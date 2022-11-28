@@ -4,13 +4,14 @@ import constants from "../../constants";
 
 interface props {
     onPress: Function;
-    txt: any
+    txt: any;
+    btnStyle?: any;
 }
 const CustomButton = (props: props) => {
     return (
         <TouchableOpacity activeOpacity={0.8}
             onPress={() => { props.onPress() }}
-            style={styles.createAccountBtn}>
+            style={[styles.createAccountBtn, props.btnStyle]}>
             <Text style={styles.createAccountTxt}>{props.txt}</Text>
         </TouchableOpacity>
     )

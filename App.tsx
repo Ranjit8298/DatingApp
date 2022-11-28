@@ -1,10 +1,11 @@
+import 'react-native-gesture-handler';
 import React from "react";
 import { SafeAreaView } from "react-native";
-import OnboardingScreen from "./src/screens/onboardingScreen/OnboardingScreen";
+import RootNavigators from './src/navigator/RootNavigator';
 
 const App = () => {
   return (
-    <OnboardingScreen />
+    <RootNavigators />
   )
 };
 

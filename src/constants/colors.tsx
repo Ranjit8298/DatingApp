@@ -11,5 +11,7 @@ export default {
     grey: 'rgb(146,146,146)',
     primary70:'#000000',
     secondary:'#323755',
+    navy:'#293462',
+    dark_blue:'#00008B'
   };
   
