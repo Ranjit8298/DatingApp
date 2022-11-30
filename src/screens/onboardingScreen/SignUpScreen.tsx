@@ -4,6 +4,7 @@ import CustomButton from '../../components/CustomButton';
 import CustomInputBox from '../../components/CustomInputBox';
 import constants from '../../constants';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import CustomBackButton from '../../components/CustomBackButton';
 
 
 interface props {
@@ -14,6 +15,8 @@ const SignUpScreen = (props: props) => {
     const [mobile, setMobile] = useState('');
     return (
         <SafeAreaView style={styles.container}>
+            <CustomBackButton
+                onPress={() => { props.navigation.goBack() }} />
             <View style={styles.circleView} />
             <View style={{ ...styles.circleView, top: constants.vh(-150), end: constants.vh(-10) }} />
             <View style={{ ...styles.circleView, top: constants.vh(-50), end: constants.vh(-180) }} />
@@ -26,11 +29,12 @@ const SignUpScreen = (props: props) => {
                 onChangeText={(val: any) => setMobile(val)}
                 keyboardType='number-pad'
                 inputViewStyle={styles.inputViewStyle}
-                returnKeyType={'done'} />
+                returnKeyType={'done'} 
+                maxLength={10}/>
 
             <View style={styles.loginView}>
                 <CustomButton
-                    onPress={() => { props.navigation.navigate('BasicInformationScreen') }}
+                    onPress={() => { props.navigation.navigate('OtpScreen'), setMobile('') }}
                     txt={constants.string.signUp.toUpperCase()}
                     btnStyle={styles.btnStyle} />
 

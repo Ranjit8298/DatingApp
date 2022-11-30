@@ -5,6 +5,9 @@ const screens = {
     LoginScreen:'LoginScreen',
     SignUpScreen:'SignUpScreen',
     BasicInformationScreen:'BasicInformationScreen',
+    ProfileImageChooseScreen:'ProfileImageChooseScreen',
+    AccessLoactionScreen:'AccessLoactionScreen',
+    OtpScreen:'OtpScreen',
   };
   
   export default screens;

@@ -1,70 +1,104 @@
 import React, { useState } from 'react';
-import { SafeAreaView, Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import { SafeAreaView, Text, View, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import CustomButton from '../../components/CustomButton';
-import CustomDateInput from '../../components/CustomDateInput';
 import CustomInputBox from '../../components/CustomInputBox';
 import constants from '../../constants';
+import DatePicker from 'react-native-date-picker'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import CustomBackButton from '../../components/CustomBackButton';
 
 interface props {
     navigation: any;
 }
 
 const BasicInformationScreen = (props: props) => {
+    const [date, setDate] = useState(new Date());
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
-    const [date, saveDate] = useState('');
+    const [male, setMale] = useState(false);
+    const [female, setFemale] = useState(false);
+
+    const toggleMaleGender = () => {
+        if (male === false || female === true) {
+            setMale(true)
+            setFemale(false)
+        } else {
+            setMale(false)
+        }
+    };
+
+    const toggleFemaleGender = () => {
+        if (female === false || male === true) {
+            setFemale(true)
+            setMale(false)
+        } else {
+            setFemale(false)
+        }
+    };
+
     return (
         <SafeAreaView style={styles.container}>
+            <CustomBackButton
+            onPress={() => {props.navigation.goBack()}}/>
             <View style={styles.circleView} />
             <View style={{ ...styles.circleView, top: constants.vh(-150), end: constants.vh(-10) }} />
             <View style={{ ...styles.circleView, top: constants.vh(-50), end: constants.vh(-180) }} />
-            <Text style={styles.loginTxt}>{constants.string.basicInfo}</Text>
-            <CustomInputBox
-                headerTxt={constants.string.firstName}
-                placeholderTxt={constants.string.enterFirstName}
-                value={name}
-                onChangeText={(val: any) => { setName(val) }}
-                keyboardType='default'
-                inputViewStyle={styles.inputViewStyle}
-                returnKeyType={'next'} />
 
-            <CustomDateInput
-                // titleStyle={}
-                placeholder={constants.string.selectDate}
-                // majorContainer={screenStyle.majorContainer}
-                // container={screenStyle.datePickerStyle}
-                fieldName="date"
-                label={'Select Date'}
-                value={date}
-                onChangeText={(val: any) => {
-                    saveDate(val);
-                }}
-                dateFormat={'DD-MMM-YYYY'}
-                maxDate={new Date()}
-            />
+            <KeyboardAwareScrollView
+                showsVerticalScrollIndicator={false}>
+                <Text style={styles.loginTxt}>{constants.string.basicInfo}</Text>
+                <CustomInputBox
+                    headerTxt={constants.string.firstName}
+                    placeholderTxt={constants.string.enterFirstName}
+                    value={name}
+                    onChangeText={(val: any) => { setName(val) }}
+                    keyboardType='default'
+                    inputViewStyle={styles.inputViewStyle}
+                    returnKeyType={'next'} />
 
-            {/* <CustomInputBox
-                headerTxt={constants.string.password.toUpperCase()}
-                placeholderTxt={constants.string.enterPass}
-                value={password}
-                onChangeText={(val: any) => { setPassword(val) }}
-                keyboardType='default'
-                inputViewStyle={styles.inputViewStyle}
-                returnKeyType={'done'}
-                secureTextEntry /> */}
+                <View style={styles.datePickerView}>
+                    <Text style={styles.txtInputHeader}>{constants.string.birthday}</Text>
+                    <DatePicker
+                        date={date}
+                        onDateChange={setDate}
+                        mode='date'
+                        androidVariant='nativeAndroid'
+                        textColor='#fff'
+                    />
+                    <Text style={styles.txtInputHeader}>{constants.string.gender}</Text>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                        <TouchableOpacity activeOpacity={0.8}
+                            onPress={() => { toggleMaleGender() }}>
+                            <Image style={{ ...styles.genderImg, tintColor: male ? constants.colors.white : constants.colors.black }}
+                                source={constants.images.maleImg} />
+                        </TouchableOpacity>
 
-            <View style={styles.loginView}>
-                <CustomButton
-                    onPress={() => { }}
-                    txt={constants.string.submit.toUpperCase()}
-                    btnStyle={styles.btnStyle} />
+                        <TouchableOpacity activeOpacity={0.8}
+                            onPress={() => { toggleFemaleGender() }}>
+                            <Image style={{ ...styles.genderImg, tintColor: female ? constants.colors.white : constants.colors.black }}
+                                source={constants.images.femaleImg} />
+                        </TouchableOpacity>
 
-                <TouchableOpacity style={styles.forgotTouchStyle}
-                    activeOpacity={0.8}
-                    onPress={() => { }}>
-                    <Text style={styles.forgotTxt}>{constants.string.forgotPass}</Text>
-                </TouchableOpacity>
-            </View>
+                    </View>
+                </View>
+
+                <CustomInputBox
+                    headerTxt={constants.string.email.toUpperCase()}
+                    placeholderTxt={constants.string.enterEmail}
+                    value={email}
+                    onChangeText={(val: any) => { setEmail(val) }}
+                    keyboardType='default'
+                    inputViewStyle={styles.inputViewStyle}
+                    returnKeyType={'done'}
+                    secureTextEntry />
+
+                <View style={styles.loginView}>
+                    <CustomButton
+                        onPress={() => { props.navigation.navigate('ProfileImageChooseScreen') }}
+                        txt={constants.string.submit.toUpperCase()}
+                        btnStyle={styles.btnStyle} />
+                </View>
+            </KeyboardAwareScrollView>
         </SafeAreaView>
     )
 };
@@ -79,7 +113,7 @@ const styles = StyleSheet.create({
         marginStart: constants.vw(40),
         fontSize: constants.vw(32),
         fontWeight: '400',
-        marginTop: constants.vh(150),
+        marginTop: constants.vh(60),
         letterSpacing: 0.8
     },
     inputViewStyle: {
@@ -87,13 +121,13 @@ const styles = StyleSheet.create({
     },
     btnStyle: {
         backgroundColor: constants.colors.secondary,
-        width: constants.vw(140),
         marginStart: constants.vw(40),
     },
     loginView: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginTop: constants.vh(80),
+        marginBottom: constants.vh(10)
     },
     forgotTouchStyle: {
         justifyContent: 'center',
@@ -115,5 +149,19 @@ const styles = StyleSheet.create({
         top: constants.vh(-130),
         end: constants.vh(-70)
     },
+    datePickerView: {
+        marginStart: constants.vw(40),
+        marginTop: constants.vh(20)
+    },
+    txtInputHeader: {
+        color: constants.colors.white,
+        fontSize: constants.vw(15.5),
+        fontWeight: '500'
+    },
+    genderImg: {
+        width: constants.vw(60),
+        height: constants.vh(60),
+        resizeMode: 'contain',
+    }
 })
 export default BasicInformationScreen;

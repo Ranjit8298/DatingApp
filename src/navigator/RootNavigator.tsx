@@ -7,13 +7,14 @@ import CheckedInScreen from '../screens/onboardingScreen/CheckedInScreen';
 import LoginScreen from '../screens/onboardingScreen/LoginScreen';
 import SignUpScreen from '../screens/onboardingScreen/SignUpScreen';
 import BasicInformationScreen from '../screens/onboardingScreen/BasicInformationScreen';
-
+import ProfileImageChooseScreen from '../screens/onboardingScreen/ProfileImageChooseScreen';
+import AccessLoactionScreen from '../screens/onboardingScreen/AccessLocationScreen';
+import OtpScreen from '../screens/onboardingScreen/OtpScreen';
 import constants from '../constants';
-UIManager.setLayoutAnimationEnabledExperimental &&
-    UIManager.setLayoutAnimationEnabledExperimental(true);
 
 const Stack = createStackNavigator();
 const RootStack = createStackNavigator();
+
 const RootNavigator = () => (
     <RootStack.Navigator>
         <RootStack.Screen
@@ -39,6 +40,21 @@ const RootNavigator = () => (
          <RootStack.Screen
             name={constants.screens.BasicInformationScreen}
             component={BasicInformationScreen}
+            options={{ headerShown: false, gestureEnabled: false }}
+        />
+         <RootStack.Screen
+            name={constants.screens.ProfileImageChooseScreen}
+            component={ProfileImageChooseScreen}
+            options={{ headerShown: false, gestureEnabled: false }}
+        />
+         <RootStack.Screen
+            name={constants.screens.AccessLoactionScreen}
+            component={AccessLoactionScreen}
+            options={{ headerShown: false, gestureEnabled: false }}
+        />
+         <RootStack.Screen
+            name={constants.screens.OtpScreen}
+            component={OtpScreen}
             options={{ headerShown: false, gestureEnabled: false }}
         />
     </RootStack.Navigator>

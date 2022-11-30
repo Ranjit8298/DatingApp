@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { SafeAreaView, Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import CustomBackButton from '../../components/CustomBackButton';
 import CustomButton from '../../components/CustomButton';
 import CustomInputBox from '../../components/CustomInputBox';
 import constants from '../../constants';
@@ -13,10 +14,18 @@ const LoginScreen = (props: props) => {
     const [password, setPassword] = useState('');
     return (
         <SafeAreaView style={styles.container}>
+            <CustomBackButton
+                onPress={() => { props.navigation.goBack() }} />
             <View style={styles.circleView} />
             <View style={{ ...styles.circleView, top: constants.vh(-150), end: constants.vh(-10) }} />
             <View style={{ ...styles.circleView, top: constants.vh(-50), end: constants.vh(-180) }} />
             <Text style={styles.loginTxt}>{constants.string.loginTxt}</Text>
+
+            {/* <TextInput 
+            value={email}
+            placeholder='enter '
+            onChangeText={(val:any) => {setEmail(val)}}/> */}
+
             <CustomInputBox
                 headerTxt={constants.string.emailTxt}
                 placeholderTxt={constants.string.enterEmailTxt}
@@ -119,9 +128,8 @@ const styles = StyleSheet.create({
         backgroundColor: constants.colors.black,
         justifyContent: 'center',
         alignItems: 'center',
-        position: 'absolute',
-        bottom: 0,
-        opacity: 0.8
+        opacity: 0.8,
+        marginTop: constants.vh(179)
     },
     signUpBtnTxt: {
         textAlign: 'center',
