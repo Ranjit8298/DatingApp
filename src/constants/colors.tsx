@@ -12,6 +12,7 @@ export default {
     primary70:'#000000',
     secondary:'#323755',
     navy:'#293462',
-    dark_blue:'#00008B'
+    dark_blue:'#00008B',
+    dark_white:'#E1D9D1',
   };
   

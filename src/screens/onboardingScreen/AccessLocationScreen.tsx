@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { SafeAreaView, Text, View, Platform, StyleSheet, Image, PermissionsAndroid } from 'react-native';
 import CustomButton from '../../components/CustomButton';
 import constants from '../../constants';
-import Geolocation from '@react-native-community/geolocation';
+// import Geolocation from '@react-native-community/geolocation';
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
+import Geolocation from 'react-native-geolocation-service';
 
 interface props {
     navigation: any;
@@ -13,12 +14,9 @@ const AccessLoactionScreen = (props: props) => {
     const [latitude, setlatitude] = useState('');
     const [longitude, setlongitude] = useState('');
 
-    // useEffect(() => {
-    //     locationPermission();
-    //     console.log(latitude);
-    //     console.log(longitude);
-    // },[])
-
+    useEffect(() => {
+        locationPermission();
+    }, [])
     const permissionPopup = async () => {
         try {
             const data =
@@ -56,6 +54,7 @@ const AccessLoactionScreen = (props: props) => {
             return value;
         }
         if (status === PermissionsAndroid.RESULTS.DENIED) {
+            // PermissionsAndroid.RESULTS.ACCESS_FINE_LOCATION
         } else if (status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
         }
         return false;
@@ -63,18 +62,44 @@ const AccessLoactionScreen = (props: props) => {
     const locationPermission = async () => {
         const hasLocationPermissions = await hasLocationPermission();
         if (hasLocationPermissions) {
+            // Geolocation.getCurrentPosition(
+            //     info => {
+            //         console.log('info===>',info);
+            //         let cordinate = info.coords;
+            //         console.log('cordinate==>',cordinate);
+            //         let lati = cordinate.latitude + '';
+            //         let longi = cordinate.longitude + '';
+            //         setlatitude(lati);
+            //         setlongitude(longi);
+
+            //         console.log('latitude==>',latitude+'');
+            //         console.log('longitude==>',longitude+'');
+
+            //     },
+            //     () => { },
+            //     {
+            //         enableHighAccuracy: false,
+            //     },
+            // );
+
             Geolocation.getCurrentPosition(
-                info => {
-                    let cordinate = info.coords;
+                (position) => {
+                    console.log(position);
+                    let cordinate = position.coords;
+                    console.log('cordinate==>', cordinate);
                     let lati = cordinate.latitude + '';
                     let longi = cordinate.longitude + '';
                     setlatitude(lati);
                     setlongitude(longi);
+
+                    console.log('latitude==>', lati);
+                    console.log('longitude==>', longi);
                 },
-                () => { },
-                {
-                    enableHighAccuracy: false,
+                (error) => {
+                    // See error code charts below.
+                    console.log(error.code, error.message);
                 },
+                { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
             );
         }
     };
@@ -98,9 +123,10 @@ const AccessLoactionScreen = (props: props) => {
 
             <CustomButton
                 onPress={() => {
-                    locationPermission();
-                    console.log(latitude);
-                    console.log(longitude);
+                    if (latitude && longitude !== '') {
+                        props.navigation.navigate('DashboardScreen')
+                    }
+
                 }}
                 txt={constants.string.startExploring}
                 btnStyle={{ alignSelf: 'center', marginTop: constants.vh(50) }} />

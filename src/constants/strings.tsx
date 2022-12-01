@@ -36,5 +36,7 @@ export default {
     verifyMobile:'Verify Your Mobile Number',
     oneTimeOtp:'One Time Password sent on your mobile number',
     resendOtp:'Resend OTP',
+    dashboard:'Dashboard',
+    users:'12 users',
   };
   

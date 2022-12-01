@@ -8,6 +8,7 @@ const screens = {
     ProfileImageChooseScreen:'ProfileImageChooseScreen',
     AccessLoactionScreen:'AccessLoactionScreen',
     OtpScreen:'OtpScreen',
+    DashboardScreen:'DashboardScreen',
   };
   
   export default screens;

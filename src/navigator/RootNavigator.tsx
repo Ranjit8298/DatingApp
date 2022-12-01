@@ -11,6 +11,7 @@ import ProfileImageChooseScreen from '../screens/onboardingScreen/ProfileImageCh
 import AccessLoactionScreen from '../screens/onboardingScreen/AccessLocationScreen';
 import OtpScreen from '../screens/onboardingScreen/OtpScreen';
 import constants from '../constants';
+import DashboardScreen from '../screens/dashboardScreen/DashboardScreen';
 
 const Stack = createStackNavigator();
 const RootStack = createStackNavigator();
@@ -55,6 +56,11 @@ const RootNavigator = () => (
          <RootStack.Screen
             name={constants.screens.OtpScreen}
             component={OtpScreen}
+            options={{ headerShown: false, gestureEnabled: false }}
+        />
+           <RootStack.Screen
+            name={constants.screens.DashboardScreen}
+            component={DashboardScreen}
             options={{ headerShown: false, gestureEnabled: false }}
         />
     </RootStack.Navigator>
