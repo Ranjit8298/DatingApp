@@ -1,6 +1,7 @@
 package com.datingapp;
 
 // import com.heanoria.library.reactnative.locationenabler.RNAndroidLocationEnablerPackage;
+import com.airbnb.android.react.maps.MapsPackage;  
 import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
@@ -22,6 +23,14 @@ public class MainApplication extends Application implements ReactApplication {
         public boolean getUseDeveloperSupport() {
           return BuildConfig.DEBUG;
         }
+
+      //   @Override  
+      //   protected List<ReactPackage> getPackages() {  
+      //     return Arrays.<ReactPackage>asList(  
+      //     new MainReactPackage(),  
+      //       new MapsPackage()  
+      //       );  
+      //  }
 
         @Override
         protected List<ReactPackage> getPackages() {

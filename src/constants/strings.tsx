@@ -38,5 +38,14 @@ export default {
     resendOtp:'Resend OTP',
     dashboard:'Dashboard',
     users:'12 users',
+    matches:'Matches',
+    goToDashboard:'Next',
+    browse:'Browse',
+    mutualLike:'Mutual Like',
+    itIsMatch:'It’s a match!',
+    sendMsg:'SEND A MESSAGE',
+    keepBrowsing:'KEEP BROWSING',
+    settings:'Settings',
+    messages:'Messages',
   };
   

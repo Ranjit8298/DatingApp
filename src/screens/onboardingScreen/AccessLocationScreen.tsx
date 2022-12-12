@@ -13,6 +13,7 @@ interface props {
 const AccessLoactionScreen = (props: props) => {
     const [latitude, setlatitude] = useState('');
     const [longitude, setlongitude] = useState('');
+    const [accuracy, setAccuracy] = useState('');
 
     useEffect(() => {
         locationPermission();
@@ -89,11 +90,14 @@ const AccessLoactionScreen = (props: props) => {
                     console.log('cordinate==>', cordinate);
                     let lati = cordinate.latitude + '';
                     let longi = cordinate.longitude + '';
+                    let accuracy = cordinate.accuracy + '';
                     setlatitude(lati);
                     setlongitude(longi);
+                    setAccuracy(accuracy);
 
                     console.log('latitude==>', lati);
                     console.log('longitude==>', longi);
+                    console.log('longitude==>', accuracy);
                 },
                 (error) => {
                     // See error code charts below.
@@ -124,7 +128,8 @@ const AccessLoactionScreen = (props: props) => {
             <CustomButton
                 onPress={() => {
                     if (latitude && longitude !== '') {
-                        props.navigation.navigate('DashboardScreen')
+                        props.navigation.navigate('MapViewScreen', { lat: latitude, long: longitude,accuracy:accuracy })
+
                     }
 
                 }}

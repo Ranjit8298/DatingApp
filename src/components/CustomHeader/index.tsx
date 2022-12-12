@@ -1,30 +1,37 @@
 import React from 'react';
-import { View, StyleSheet, Image, Text } from 'react-native';
+import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
 import constants from '../../constants';
 
 interface props {
-    headerTxt:any;
-    userTxt?:any;
-    messageCount:any;
+    headerTxt: any;
+    userTxt?: any;
+    messageCount: any;
+    onMenuPress: any;
+    onMessagePress: any;
 }
 
-const CustomHeader = (props:props) => {
+const CustomHeader = (props: props) => {
     return (
         <View style={styles.headerView}>
-            <Image style={styles.menuIcon}
-                source={constants.images.menuImg} />
+            <TouchableOpacity activeOpacity={0.8}
+                onPress={() => { props.onMenuPress()}}>
+                <Image style={styles.menuIcon}
+                    source={constants.images.menuImg} />
+            </TouchableOpacity>
+
             <View>
                 <Text style={styles.headerTxt}>{props.headerTxt}</Text>
                 <Text style={styles.userTxt}>{props.userTxt}</Text>
             </View>
 
-            <View>
+            <TouchableOpacity activeOpacity={0.8}
+                onPress={() => { props.onMessagePress() }}>
                 <Image style={{ ...styles.menuIcon, tintColor: constants.colors.navy, }}
                     source={constants.images.messageImg} />
                 <View style={styles.messageRoundView}>
                     <Text style={styles.messageTxt}>{props.messageCount}</Text>
                 </View>
-            </View>
+            </TouchableOpacity>
 
         </View>
     )
@@ -32,7 +39,7 @@ const CustomHeader = (props:props) => {
 
 const styles = StyleSheet.create({
     headerView: {
-        backgroundColor: constants.colors.white,
+        backgroundColor: constants.colors.inputborderColor,
         height: constants.vh(58),
         width: '100%',
         justifyContent: 'space-between',
@@ -67,10 +74,10 @@ const styles = StyleSheet.create({
         fontSize: 12,
         alignSelf: 'center',
     },
-    userTxt:{
-        alignSelf:'center',
-        color:constants.colors.colorPrimary,
-        marginTop:constants.vh(-5)
+    userTxt: {
+        alignSelf: 'center',
+        color: constants.colors.colorPrimary,
+        marginTop: constants.vh(-2)
     }
 });
 export default CustomHeader;

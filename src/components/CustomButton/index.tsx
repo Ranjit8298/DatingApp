@@ -6,13 +6,14 @@ interface props {
     onPress: Function;
     txt: any;
     btnStyle?: any;
+    txtStyle?:any;
 }
 const CustomButton = (props: props) => {
     return (
         <TouchableOpacity activeOpacity={0.8}
             onPress={() => { props.onPress() }}
             style={[styles.createAccountBtn, props.btnStyle]}>
-            <Text style={styles.createAccountTxt}>{props.txt}</Text>
+            <Text style={[styles.createAccountTxt, props.txtStyle]}>{props.txt}</Text>
         </TouchableOpacity>
     )
 }

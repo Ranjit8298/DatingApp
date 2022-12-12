@@ -9,6 +9,8 @@ const screens = {
     AccessLoactionScreen:'AccessLoactionScreen',
     OtpScreen:'OtpScreen',
     DashboardScreen:'DashboardScreen',
+    QRCodeScannerScreen:'QRCodeScannerScreen',
+    MapViewScreen:'MapViewScreen',
   };
   
   export default screens;

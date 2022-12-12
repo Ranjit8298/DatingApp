@@ -15,5 +15,18 @@ export default {
     restaurantImg_4: require('../assets/images/restaurant_4.jpg'),
     noDataImg: require('../assets/images/no_data.png'),
     searchImg: require('../assets/images/search.png'),
+    cancelImg: require('../assets/images/cancel.png'),
+    starImg: require('../assets/images/star.png'),
+    heartImg: require('../assets/images/heart.png'),
+    closeImg: require('../assets/images/close.png'),
+    dashboardImg: require('../assets/images/dashboard.png'),
+    browseImg: require('../assets/images/browse.png'),
+    matchImg: require('../assets/images/matches.png'),
+    qrCodeImg: require('../assets/images/qr_code.png'),
+    settingsImg: require('../assets/images/settings.png'),
+    chatBgImg: require('../assets/images/chat_bg.jpg'),
+    manOneImg: require('../assets/images/man_one.jpg'),
+    manTwoImg: require('../assets/images/man_two.jpg'),
+    manThreeImg: require('../assets/images/man_three.jpg'),
   };
   
