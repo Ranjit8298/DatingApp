@@ -15,12 +15,15 @@ import constants from '../../constants';
 
 interface props {
   navigation: any;
+  route: any;
 }
 
 const MatchesUserScreen = (props: props) => {
   const [location, setLoaction] = useState('');
-  const [filteredDataSource, setFilteredDataSource] = useState([]);
-  const [masterDataSource, setMasterDataSource] = useState([]);
+  const [filteredDataSource, setFilteredDataSource] = useState<any[]>([]);
+  const [masterDataSource, setMasterDataSource] = useState<any[]>([]);
+
+  const liveUserCount = props.route.params?.userLiveCount;
 
   useEffect(() => {
     setFilteredDataSource(userData);
@@ -56,7 +59,7 @@ const MatchesUserScreen = (props: props) => {
         onMessagePress={() => {
           props.navigation.navigate('AllMessageScreen');
         }}
-        userTxt={constants.string.users}
+        userTxt={liveUserCount}
       />
 
       <CustomSearchBox

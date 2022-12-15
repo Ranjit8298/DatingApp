@@ -7,11 +7,13 @@ import {
   Text,
   Image,
   TouchableOpacity,
+  BackHandler,
   Alert,
 } from 'react-native';
 import CustomHeader from '../../components/CustomHeader';
 import CustomSearchBox from '../../components/CustomSearchBox';
 import constants from '../../constants';
+import Router from '../../navigator/Routes';
 
 interface props {
   navigation: any;
@@ -19,9 +21,10 @@ interface props {
 
 const DashboardScreen = (props: props) => {
   const [location, setLoaction] = useState('');
-  const [filteredDataSource, setFilteredDataSource] = useState([]);
-  const [masterDataSource, setMasterDataSource] = useState([]);
+  const [filteredDataSource, setFilteredDataSource] = useState<any[]>([]);
+  const [masterDataSource, setMasterDataSource] = useState<any[]>([]);
 
+  // Router.resetNew(props.navigation, 'RootNavigator', {});
   useEffect(() => {
     setFilteredDataSource(userData);
     setMasterDataSource(userData);
@@ -87,7 +90,9 @@ const DashboardScreen = (props: props) => {
             activeOpacity={0.8}
             onPress={() => {
               {
-                props.navigation.navigate('MatchesUserScreen')
+                props.navigation.navigate('MatchesUserScreen', {
+                  userLiveCount: item.locationActiveUser,
+                });
               }
             }}
             style={styles.itemView}>

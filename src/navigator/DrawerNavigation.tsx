@@ -81,9 +81,11 @@ const DrawerNavigation = () => {
 
         <TouchableOpacity
           activeOpacity={0.8}
-          onPress={() => {}}
+          onPress={() => {
+            props.navigation.navigate('LoginScreen');
+          }}
           style={styles.bottomStyle}>
-          <Text style={styles.bottomTxt}>{'Checked In'}</Text>
+          <Text style={styles.bottomTxt}>{'LOGOUT'}</Text>
         </TouchableOpacity>
       </SafeAreaView>
     );

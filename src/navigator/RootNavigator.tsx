@@ -12,7 +12,7 @@ import AccessLoactionScreen from '../screens/onboardingScreen/AccessLocationScre
 import OtpScreen from '../screens/onboardingScreen/OtpScreen';
 import constants from '../constants';
 import DrawerNavigation from './DrawerNavigation';
-import MapViewScreen from '../screens/dashboardScreen/MapViewScreen';
+import MapViewScreen from '../screens/onboardingScreen/MapViewScreen';
 import MutualLikeScreen from '../screens/dashboardScreen/MutualLikeScreen';
 
 const Stack = createStackNavigator();

@@ -10,16 +10,58 @@ import {
 import CustomButton from '../../components/CustomButton';
 import CustomInputBox from '../../components/CustomInputBox';
 import constants from '../../constants';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import CustomBackButton from '../../components/CustomBackButton';
-import auth from '@react-native-firebase/auth';
+import {v4 as uuidv4} from 'uuid';
+import CommonFunction from '../../utils/CommonFunction';
+import database from '@react-native-firebase/database';
+import {connect} from 'react-redux';
+import {saveNewReference} from '../../modules/auth';
 
 interface props {
   navigation: any;
+  saveNewReference: any;
 }
 
 const SignUpScreen = (props: props) => {
   const [mobile, setMobile] = useState('');
+  const [password, setPassword] = useState('');
+
+  const saveSignUpData = () => {
+    let randomNumber = Math.floor(100000 + Math.random() * 900000);
+    let userRefNumber = `userDetails_database_${randomNumber}`;
+    props.saveNewReference(userRefNumber);
+
+    database()
+      .ref(userRefNumber)
+      .set({
+        userMobileNumber: mobile,
+        userId: uuidv4(),
+        userPassword: password,
+      })
+      .then(() =>
+        CommonFunction.isToast('success', 'Your Data Saved Successfully'),
+      );
+  };
+
+  const validateSignUp = () => {
+    let reg = /^(\+\d{1,3}[- ]?)?\d{10}$/;
+    if (CommonFunction.isNullUndefined(mobile)) {
+      CommonFunction.isToast('error', 'Please Enter Mobile Number');
+    } else if (reg.test(mobile) === false) {
+      CommonFunction.isToast('error', 'Please Enter Correct Mobile Number');
+    } else if (CommonFunction.isNullUndefined(password)) {
+      CommonFunction.isToast('error', 'Please Enter Password');
+    } else if (password.length < 4) {
+      CommonFunction.isToast('error', 'Please Enter Minimum 4 Digit Password');
+    } else {
+      props.navigation.navigate('OtpScreen', {
+        mobile: mobile,
+        mode: 'signup',
+      });
+      setMobile('');
+      saveSignUpData();
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -56,10 +98,22 @@ const SignUpScreen = (props: props) => {
         maxLength={10}
       />
 
+      <CustomInputBox
+        headerTxt={constants.string.password}
+        placeholderTxt={constants.string.enterPass}
+        value={password}
+        onChangeText={(val: any) => setPassword(val)}
+        keyboardType="number-pad"
+        inputViewStyle={styles.inputViewStyle}
+        returnKeyType={'done'}
+        maxLength={10}
+        secureTextEntry
+      />
+
       <View style={styles.loginView}>
         <CustomButton
           onPress={() => {
-            props.navigation.navigate('OtpScreen'), setMobile('');
+            validateSignUp();
           }}
           txt={constants.string.signUp.toUpperCase()}
           btnStyle={styles.btnStyle}
@@ -91,7 +145,7 @@ const styles = StyleSheet.create({
     marginStart: constants.vw(40),
     fontSize: constants.vw(32),
     fontWeight: '400',
-    marginTop: constants.vh(150),
+    marginTop: constants.vh(40),
     letterSpacing: 0.8,
   },
   inputViewStyle: {
@@ -129,8 +183,17 @@ const styles = StyleSheet.create({
   },
   footerImg: {
     width: '100%',
-    bottom: constants.vh(-100),
+    bottom: constants.vh(-80),
     opacity: 0.7,
   },
 });
-export default SignUpScreen;
+
+const mapStateToProps = (state: any) => ({
+  // todoDataList: state.todo.todoData,
+});
+
+const mapDispatchToProps = {
+  saveNewReference: (data: any) => saveNewReference(data),
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUpScreen);

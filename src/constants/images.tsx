@@ -28,5 +28,6 @@ export default {
     manOneImg: require('../assets/images/man_one.jpg'),
     manTwoImg: require('../assets/images/man_two.jpg'),
     manThreeImg: require('../assets/images/man_three.jpg'),
+    logoutImg: require('../assets/images/logout.png'),
   };
   

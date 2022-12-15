@@ -1,42 +1,75 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, createRef} from 'react';
 import {
   SafeAreaView,
   Text,
   View,
   TouchableOpacity,
   StyleSheet,
-  ToastAndroid,
 } from 'react-native';
 import CustomBackButton from '../../components/CustomBackButton';
 import CustomButton from '../../components/CustomButton';
 import CustomInputBox from '../../components/CustomInputBox';
 import constants from '../../constants';
-import Toast from 'react-native-toast-message';
+import database, {firebase} from '@react-native-firebase/database';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import CommonFunction from '../../utils/CommonFunction';
+import {connect} from 'react-redux';
+import {saveSingleUserDetails, saveUserDetails} from '../../modules/auth';
 
 interface props {
   navigation: any;
+  saveUserDetails: any;
+  saveUserDetailsData: any;
+  saveSingleUserDetails: any;
 }
 
 const LoginScreen = (props: props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const validateLogin = () => {
-    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
-    if (reg.test(email) === false) {
-      //   Toast.show({
-      //     position:'bottom',
-      //     type: 'error',
-      //     text2: 'Please Enter Correct Email',
-      //     autoHide: true,
-      //   });
-      ToastAndroid.show('Please Enter Correct Email', ToastAndroid.SHORT);
-    } else if (password === '') {
-      ToastAndroid.show('Please Enter Password', ToastAndroid.SHORT);
-    } else {
-      props.navigation.navigate('AccessLoactionScreen');
-    }
+  useEffect(() => {
+    getDataFromFirebase();
+  }, []);
+
+  const getDataFromFirebase = () => {
+    firebase
+      .database()
+      .ref()
+      .on('value', snapshot => {
+        let responselist = snapshot.val();
+        props.saveUserDetails(Object.values(responselist));
+      });
   };
+
+  const validateLogin = () => {
+    props.saveUserDetailsData.map((user: any) => {
+      if (user.userMobileNumber === email && user.userPassword === password) {
+        props.navigation.navigate('AccessLoactionScreen');
+        CommonFunction.isToast('success', 'Login Successfully');
+        setEmail('');
+        setPassword('');
+        props.saveSingleUserDetails(user);
+      }
+    });
+    // let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+    // let mobReg = /^(\+\d{1,3}[- ]?)?\d{10}$/;
+    // if (CommonFunction.isNullUndefined(email)) {
+    //   ToastAndroid.show('Please Enter Mobile Number', ToastAndroid.SHORT);
+    // } else if (mobReg.test(email) === false) {
+    //   ToastAndroid.show('Please Enter Correct Mobile Number', ToastAndroid.SHORT);
+    // } else if (
+    //   CommonFunction.isNullUndefined(password) &&
+    //   password.length < 4
+    // ) {
+    //   ToastAndroid.show('Please enter 4 digit password', ToastAndroid.SHORT);
+    // } else if (userMobileNumber === email || userEmail === email) {
+    //   props.navigation.navigate('AccessLoactionScreen');
+    //   ToastAndroid.show('Login Successfully', ToastAndroid.SHORT);
+    // } else {
+    //   ToastAndroid.show('You are not register with us.', ToastAndroid.SHORT);
+    // }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <CustomBackButton
@@ -59,69 +92,66 @@ const LoginScreen = (props: props) => {
           end: constants.vh(-180),
         }}
       />
-      <Text style={styles.loginTxt}>{constants.string.loginTxt}</Text>
+      <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+        <Text style={styles.loginTxt}>{constants.string.loginTxt}</Text>
 
-      {/* <TextInput 
-            value={email}
-            placeholder='enter '
-            onChangeText={(val:any) => {setEmail(val)}}/> */}
-
-      <CustomInputBox
-        headerTxt={constants.string.emailTxt}
-        placeholderTxt={constants.string.enterEmailTxt}
-        value={email}
-        onChangeText={(val: any) => {
-          setEmail(val);
-        }}
-        keyboardType="default"
-        inputViewStyle={styles.inputViewStyle}
-        returnKeyType={'next'}
-      />
-
-      <CustomInputBox
-        headerTxt={constants.string.password.toUpperCase()}
-        placeholderTxt={constants.string.enterPass}
-        value={password}
-        onChangeText={(val: any) => {
-          setPassword(val);
-        }}
-        keyboardType="default"
-        inputViewStyle={styles.inputViewStyle}
-        returnKeyType={'done'}
-        secureTextEntry
-      />
-
-      <View style={styles.loginView}>
-        <CustomButton
-          onPress={() => {
-            validateLogin();
+        <CustomInputBox
+          headerTxt={constants.string.emailTxt}
+          placeholderTxt={constants.string.enterEmailTxt}
+          value={email}
+          onChangeText={(val: any) => {
+            setEmail(val);
           }}
-          txt={constants.string.loginTxt.toUpperCase()}
-          btnStyle={styles.btnStyle}
+          keyboardType="number-pad"
+          inputViewStyle={styles.inputViewStyle}
+          returnKeyType={'done'}
         />
 
-        <TouchableOpacity
-          style={styles.forgotTouchStyle}
-          activeOpacity={0.8}
-          onPress={() => {}}>
-          <Text style={styles.forgotTxt}>{constants.string.forgotPass}</Text>
-        </TouchableOpacity>
-      </View>
+        <CustomInputBox
+          headerTxt={constants.string.password.toUpperCase()}
+          placeholderTxt={constants.string.enterPass}
+          value={password}
+          onChangeText={(val: any) => {
+            setPassword(val);
+          }}
+          keyboardType="number-pad"
+          inputViewStyle={styles.inputViewStyle}
+          returnKeyType={'done'}
+          secureTextEntry
+        />
 
-      <View style={styles.footerView}>
-        <View style={{flexDirection: 'row'}}>
-          <Text style={{color: constants.colors.white}}>
-            {constants.string.dontHaveAcc}
-          </Text>
-          <TouchableOpacity
-            activeOpacity={0.8}
+        <View style={styles.loginView}>
+          <CustomButton
             onPress={() => {
-              props.navigation.navigate('SignUpScreen');
-            }}>
-            <Text style={styles.signUpBtnTxt}>{constants.string.signUp}</Text>
+              validateLogin();
+            }}
+            txt={constants.string.loginTxt.toUpperCase()}
+            btnStyle={styles.btnStyle}
+          />
+
+          <TouchableOpacity
+            style={styles.forgotTouchStyle}
+            activeOpacity={0.8}
+            onPress={() => {}}>
+            <Text style={styles.forgotTxt}>{constants.string.forgotPass}</Text>
           </TouchableOpacity>
         </View>
-      </View>
+
+        <View style={styles.footerView}>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={{color: constants.colors.white}}>
+              {constants.string.dontHaveAcc}
+            </Text>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => {
+                props.navigation.navigate('SignUpScreen');
+              }}>
+              <Text style={styles.signUpBtnTxt}>{constants.string.signUp}</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 };
@@ -188,4 +218,14 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
 });
-export default LoginScreen;
+
+const mapStateToProps = (state: any) => ({
+  saveUserDetailsData: state.auth.saveUserDetails,
+});
+
+const mapDispatchToProps = {
+  saveUserDetails: (data: any) => saveUserDetails(data),
+  saveSingleUserDetails: (data: any) => saveSingleUserDetails(data),
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);

@@ -3,13 +3,19 @@ import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import CustomHeader from '../../components/CustomHeader';
 import constants from '../../constants';
 
-const AllMessageScreen = () => {
+interface props {
+  navigation: any;
+}
+
+const AllMessageScreen = (props: props) => {
   return (
     <SafeAreaView>
       <CustomHeader
         headerTxt={constants.string.messages}
         messageCount={'13'}
-        onMenuPress={() => {}}
+        onMenuPress={() => {
+          props.navigation.openDrawer();
+        }}
         onMessagePress={() => {}}
       />
     </SafeAreaView>

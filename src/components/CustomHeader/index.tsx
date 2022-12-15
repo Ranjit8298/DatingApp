@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         flexDirection: 'row',
         alignItems: 'center',
-        padding: constants.vw(15)
+        padding: constants.vw(15),
     },
     menuIcon: {
         tintColor: constants.colors.colorPrimary,
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     userTxt: {
         alignSelf: 'center',
         color: constants.colors.colorPrimary,
-        marginTop: constants.vh(-2)
+        marginTop: constants.vh(0)
     }
 });
 export default CustomHeader;

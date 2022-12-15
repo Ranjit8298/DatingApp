@@ -7,6 +7,7 @@ import {
   ImageBackground,
   Switch,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import CustomButton from '../../components/CustomButton';
 import CustomHeader from '../../components/CustomHeader';
@@ -114,6 +115,19 @@ const SettingsScreen = (props: props) => {
         />
       </View>
       <CustomSeprator sepratorStyle={{marginStart: constants.vw(15)}} />
+
+      <TouchableOpacity
+        activeOpacity={0.8}
+        style={styles.signOutView}
+        onPress={() => {
+          props.navigation.navigate('LoginScreen');
+        }}>
+        <Image
+          style={{tintColor: constants.colors.colorPrimary}}
+          source={constants.images.logoutImg}
+        />
+        <Text style={styles.signOutTxt}>{'LOGOUT'}</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -167,6 +181,24 @@ const styles = StyleSheet.create({
     fontSize: constants.vw(14.5),
     fontWeight: '400',
     letterSpacing: 0.3,
+  },
+  signOutView: {
+    backgroundColor: constants.colors.dark_white,
+    width: constants.vw(335),
+    height: constants.vh(58),
+    alignSelf: 'center',
+    justifyContent: 'center',
+    marginTop: constants.vh(40),
+    borderRadius: constants.vw(15),
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  signOutTxt: {
+    alignSelf: 'center',
+    color: constants.colors.colorPrimary,
+    fontWeight: 'bold',
+    fontSize: constants.vw(17),
+    marginStart: constants.vh(8),
   },
 });
 export default SettingsScreen;
