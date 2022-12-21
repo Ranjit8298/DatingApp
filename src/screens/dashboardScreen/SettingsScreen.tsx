@@ -13,6 +13,7 @@ import CustomButton from '../../components/CustomButton';
 import CustomHeader from '../../components/CustomHeader';
 import constants from '../../constants';
 import CustomSeprator from '../../components/CustomSeprator';
+import Router from '../../navigator/Router';
 interface props {
   navigation: any;
 }
@@ -42,6 +43,9 @@ const SettingsScreen = (props: props) => {
           props.navigation.openDrawer();
         }}
         onMessagePress={() => {}}
+        showRound={true}
+        leftImg={constants.images.messageImg}
+        rightImg={constants.images.menuImg}
       />
       <ImageBackground
         style={styles.topChatImg}
@@ -120,7 +124,7 @@ const SettingsScreen = (props: props) => {
         activeOpacity={0.8}
         style={styles.signOutView}
         onPress={() => {
-          props.navigation.navigate('LoginScreen');
+          Router.resetNew(props.navigation, 'RootNavigator', {});
         }}>
         <Image
           style={{tintColor: constants.colors.colorPrimary}}

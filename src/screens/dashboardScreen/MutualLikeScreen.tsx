@@ -10,16 +10,21 @@ interface props {
 }
 
 const MutualLikeScreen = (props: props) => {
-  const UserName = props.route.params.UserName;
-  const UserImg = props.route.params.UserImg;
-  const UserId = props.route.params.UserId;
+  const UserName = props.route.params?.UserName;
+  const UserImg = props.route.params?.UserImg;
+  const UserId = props.route.params?.UserId;
   return (
     <SafeAreaView style={styles.container}>
       <CustomHeader
         headerTxt={constants.string.mutualLike}
         messageCount={'21'}
-        onMenuPress={() => {}}
+        onMenuPress={() => {
+          props.navigation.goBack();
+        }}
         onMessagePress={() => {}}
+        showRound={true}
+        leftImg={constants.images.messageImg}
+        rightImg={constants.images.arrowBackImg}
       />
 
       <View style={styles.cardStyle}>
@@ -55,7 +60,9 @@ const MutualLikeScreen = (props: props) => {
           txt={constants.string.sendMsg}
         />
         <CustomButton
-          onPress={() => {props.navigation.navigate('BrowseScreen')}}
+          onPress={() => {
+            props.navigation.navigate('BrowseScreen');
+          }}
           txt={constants.string.keepBrowsing}
           btnStyle={{
             marginTop: constants.vh(20),

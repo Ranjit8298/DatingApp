@@ -15,11 +15,13 @@ import database from '@react-native-firebase/database';
 import {v4 as uuidv4} from 'uuid';
 import CommonFunction from '../../utils/CommonFunction';
 import {connect} from 'react-redux';
+import {saveCurrentAddress} from '../../modules/auth';
 
 interface props {
   navigation: any;
   route: any;
   saveNewReference: any;
+  saveCurrentAddress:any;
 }
 
 const MapViewScreen = (props: props) => {
@@ -124,6 +126,7 @@ const MapViewScreen = (props: props) => {
           activeOpacity={0.8}
           onPress={() => {
             props.navigation.navigate('DrawerNavigation');
+            props.saveCurrentAddress(address);
           }}
           style={{
             backgroundColor: constants.colors.black,
@@ -257,6 +260,8 @@ const mapStateToProps = (state: any) => ({
   saveNewReference: state.auth.saveNewReference,
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  saveCurrentAddress: (data: any) => saveCurrentAddress(data),
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapViewScreen);

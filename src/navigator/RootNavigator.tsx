@@ -14,6 +14,10 @@ import constants from '../constants';
 import DrawerNavigation from './DrawerNavigation';
 import MapViewScreen from '../screens/onboardingScreen/MapViewScreen';
 import MutualLikeScreen from '../screens/dashboardScreen/MutualLikeScreen';
+import FilterModal from '../screens/dashboardScreen/FilterModal';
+import SingleUserMessageScreen from '../screens/dashboardScreen/SingleUserMessageScreen';
+
+import {navigationRef} from './RootNavigation';
 
 const Stack = createStackNavigator();
 const RootStack = createStackNavigator();
@@ -71,13 +75,13 @@ const modalLayout = {
   title: '',
   ...TransitionPresets.ModalSlideFromBottomIOS,
   cardStyle: {
-    backgroundColor: 'rgba(0,0,0,0.2)',
+    backgroundColor: 'rgba(0,0,0,0.3)',
     opacity: 1,
   },
 };
 const RootNavigators = () => {
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <Stack.Navigator>
         <RootStack.Group>
           <Stack.Screen
@@ -94,6 +98,23 @@ const RootNavigators = () => {
             name="MutualLikeScreen"
             component={MutualLikeScreen}
             options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="SingleUserMessageScreen"
+            component={SingleUserMessageScreen}
+            options={{headerShown: false}}
+          />
+        </RootStack.Group>
+
+        <RootStack.Group
+          screenOptions={{
+            presentation: 'transparentModal',
+            headerShown: false,
+          }}>
+          <Stack.Screen
+            name="FilterModal"
+            component={FilterModal}
+            options={modalLayout}
           />
         </RootStack.Group>
       </Stack.Navigator>

@@ -7,22 +7,25 @@ import {
   Text,
   Image,
   TouchableOpacity,
-  BackHandler,
-  Alert,
 } from 'react-native';
 import CustomHeader from '../../components/CustomHeader';
 import CustomSearchBox from '../../components/CustomSearchBox';
 import constants from '../../constants';
-import Router from '../../navigator/Routes';
+// import Router from '../../navigator/routes';
+import {connect} from 'react-redux';
 
 interface props {
   navigation: any;
+  route: any;
+  saveCurrentAddress: any;
 }
 
 const DashboardScreen = (props: props) => {
   const [location, setLoaction] = useState('');
   const [filteredDataSource, setFilteredDataSource] = useState<any[]>([]);
   const [masterDataSource, setMasterDataSource] = useState<any[]>([]);
+
+  console.log('dashboardAdd===>', props.saveCurrentAddress);
 
   // Router.resetNew(props.navigation, 'RootNavigator', {});
   useEffect(() => {
@@ -51,7 +54,7 @@ const DashboardScreen = (props: props) => {
   return (
     <SafeAreaView style={styles.container}>
       <CustomHeader
-        headerTxt={constants.string.dashboard}
+        headerTxt={props.saveCurrentAddress}
         messageCount={'99'}
         onMenuPress={() => {
           props.navigation.openDrawer();
@@ -59,6 +62,10 @@ const DashboardScreen = (props: props) => {
         onMessagePress={() => {
           props.navigation.navigate('AllMessageScreen');
         }}
+        headerTxtStyle={styles.headerTxtStyle}
+        showRound={true}
+        leftImg={constants.images.messageImg}
+        rightImg={constants.images.menuImg}
       />
 
       <CustomSearchBox
@@ -77,11 +84,15 @@ const DashboardScreen = (props: props) => {
         numColumns={2}
         ListEmptyComponent={() => {
           return (
-            <View>
+            <View style={{justifyContent: 'center'}}>
               <Image
                 style={styles.noDataImg}
                 source={constants.images.noDataImg}
               />
+              <Text
+                style={
+                  styles.noMsgTxt
+                }>{`You do not have any matches place.`}</Text>
             </View>
           );
         }}
@@ -101,7 +112,7 @@ const DashboardScreen = (props: props) => {
             <Text
               style={{
                 ...styles.locationName,
-                fontSize: 16,
+                fontSize: constants.vw(14),
                 color: constants.colors.colorPrimary,
               }}>
               {item.locationActiveUser}
@@ -119,18 +130,20 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   locationImg: {
-    width: constants.vw(177.5),
-    height: constants.vh(160),
-    borderRadius: constants.vw(5),
-    resizeMode: 'contain',
+    width: constants.vw(160),
+    height: constants.vh(145),
+    borderRadius: constants.vw(2),
+    resizeMode: 'cover',
   },
   itemView: {
-    padding: constants.vw(5),
+    padding: constants.vw(15),
     alignSelf: 'center',
     justifyContent: 'center',
+    alignItems:'center',
+    width:'50%'
   },
   locationName: {
-    fontSize: 20,
+    fontSize: constants.vw(16.5),
     textAlign: 'center',
     alignSelf: 'center',
     fontWeight: '400',
@@ -140,8 +153,20 @@ const styles = StyleSheet.create({
     width: constants.vw(300),
     height: constants.vh(300),
     alignSelf: 'center',
-    marginTop: constants.vh(200),
+    marginTop: constants.vh(140),
     resizeMode: 'contain',
+  },
+  headerTxtStyle: {
+    fontSize: constants.vw(12),
+    textAlign: 'center',
+    marginStart: constants.vh(10),
+    marginEnd: constants.vh(10),
+    maxWidth: constants.vw(225),
+  },
+  noMsgTxt: {
+    fontSize: constants.vw(15),
+    color: constants.colors.grey,
+    alignSelf: 'center',
   },
 });
 
@@ -208,4 +233,10 @@ const userData = [
   },
 ];
 
-export default DashboardScreen;
+const mapStateToProps = (state: any) => ({
+  saveCurrentAddress: state.auth.saveCurrentAddress,
+});
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardScreen);

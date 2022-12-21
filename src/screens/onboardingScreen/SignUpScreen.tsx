@@ -11,6 +11,7 @@ import CustomButton from '../../components/CustomButton';
 import CustomInputBox from '../../components/CustomInputBox';
 import constants from '../../constants';
 import CustomBackButton from '../../components/CustomBackButton';
+import 'react-native-get-random-values'
 import {v4 as uuidv4} from 'uuid';
 import CommonFunction from '../../utils/CommonFunction';
 import database from '@react-native-firebase/database';
@@ -24,8 +25,7 @@ interface props {
 
 const SignUpScreen = (props: props) => {
   const [mobile, setMobile] = useState('');
-  const [password, setPassword] = useState('');
-
+ 
   const saveSignUpData = () => {
     let randomNumber = Math.floor(100000 + Math.random() * 900000);
     let userRefNumber = `userDetails_database_${randomNumber}`;
@@ -36,7 +36,6 @@ const SignUpScreen = (props: props) => {
       .set({
         userMobileNumber: mobile,
         userId: uuidv4(),
-        userPassword: password,
       })
       .then(() =>
         CommonFunction.isToast('success', 'Your Data Saved Successfully'),
@@ -49,10 +48,6 @@ const SignUpScreen = (props: props) => {
       CommonFunction.isToast('error', 'Please Enter Mobile Number');
     } else if (reg.test(mobile) === false) {
       CommonFunction.isToast('error', 'Please Enter Correct Mobile Number');
-    } else if (CommonFunction.isNullUndefined(password)) {
-      CommonFunction.isToast('error', 'Please Enter Password');
-    } else if (password.length < 4) {
-      CommonFunction.isToast('error', 'Please Enter Minimum 4 Digit Password');
     } else {
       props.navigation.navigate('OtpScreen', {
         mobile: mobile,
@@ -97,19 +92,6 @@ const SignUpScreen = (props: props) => {
         returnKeyType={'done'}
         maxLength={10}
       />
-
-      <CustomInputBox
-        headerTxt={constants.string.password}
-        placeholderTxt={constants.string.enterPass}
-        value={password}
-        onChangeText={(val: any) => setPassword(val)}
-        keyboardType="number-pad"
-        inputViewStyle={styles.inputViewStyle}
-        returnKeyType={'done'}
-        maxLength={10}
-        secureTextEntry
-      />
-
       <View style={styles.loginView}>
         <CustomButton
           onPress={() => {
@@ -145,7 +127,7 @@ const styles = StyleSheet.create({
     marginStart: constants.vw(40),
     fontSize: constants.vw(32),
     fontWeight: '400',
-    marginTop: constants.vh(40),
+    marginTop: constants.vh(150),
     letterSpacing: 0.8,
   },
   inputViewStyle: {
@@ -183,7 +165,7 @@ const styles = StyleSheet.create({
   },
   footerImg: {
     width: '100%',
-    bottom: constants.vh(-80),
+    bottom: constants.vh(-75),
     opacity: 0.7,
   },
 });

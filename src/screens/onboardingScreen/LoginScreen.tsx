@@ -43,7 +43,7 @@ const LoginScreen = (props: props) => {
 
   const validateLogin = () => {
     props.saveUserDetailsData.map((user: any) => {
-      if (user.userMobileNumber === email && user.userPassword === password) {
+      if (user.userMobileNumber === email) {
         props.navigation.navigate('AccessLoactionScreen');
         CommonFunction.isToast('success', 'Login Successfully');
         setEmail('');

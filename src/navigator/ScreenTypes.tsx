@@ -5,6 +5,7 @@ import {StackNavigationProp} from '@react-navigation/stack';
  * Stack Navigator types.
  */
 export type RootStackParamList = {
+  RootNavigator: undefined;
   OnboardingScreen: undefined;
   CheckedInScreen: undefined;
   LoginScreen: undefined;
@@ -14,13 +15,13 @@ export type RootStackParamList = {
   AccessLoactionScreen: undefined;
   OtpScreen: undefined;
   MapViewScreen: undefined;
-  DashboardScreen: undefined;
 };
 
 /**
  * RootStack all registered screens.
  */
 export type Screens =
+  | 'RootNavigator'
   | 'OnboardingScreen'
   | 'CheckedInScreen'
   | 'LoginScreen'
@@ -29,8 +30,7 @@ export type Screens =
   | 'ProfileImageChooseScreen'
   | 'AccessLoactionScreen'
   | 'OtpScreen'
-  | 'MapViewScreen'
-  | 'DashboardScreen';
+  | 'MapViewScreen';
 
 /**
  * Generic navigation props interface for all screens.

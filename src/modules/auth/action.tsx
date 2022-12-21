@@ -2,6 +2,7 @@ import {
   SAVE_NewReference,
   SAVE_USER_DETAILS,
   SAVE_SINGLE_USER_DETAILS,
+  SAVE_CURRENT_ADDRESS
 } from './type';
 
 export const saveNewReference = (data: any) => {
@@ -30,3 +31,13 @@ export const saveSingleUserDetails = (data: any) => {
     });
   };
 };
+
+export const saveCurrentAddress = (data: any) => {
+  return (dispatch: any) => {
+    dispatch({
+      type: SAVE_CURRENT_ADDRESS,
+      payload: {saveCurrentAddress: data},
+    });
+  };
+};
+

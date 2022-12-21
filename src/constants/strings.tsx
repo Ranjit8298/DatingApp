@@ -47,5 +47,6 @@ export default {
     keepBrowsing:'KEEP BROWSING',
     settings:'Settings',
     messages:'Messages',
+    invitations:'Invitations',
   };
   

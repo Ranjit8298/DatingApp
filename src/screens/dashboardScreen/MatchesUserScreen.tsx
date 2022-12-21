@@ -60,6 +60,9 @@ const MatchesUserScreen = (props: props) => {
           props.navigation.navigate('AllMessageScreen');
         }}
         userTxt={liveUserCount}
+        showRound={true}
+        leftImg={constants.images.messageImg}
+        rightImg={constants.images.menuImg}
       />
 
       <CustomSearchBox
@@ -74,36 +77,42 @@ const MatchesUserScreen = (props: props) => {
 
       <FlatList
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={{alignSelf: 'center', justifyContent:'center'}}
         data={filteredDataSource}
         numColumns={2}
         ListEmptyComponent={() => {
           return (
-            <View>
+            <View style={{justifyContent: 'center'}}>
               <Image
                 style={styles.noDataImg}
                 source={constants.images.noDataImg}
               />
+              <Text
+                style={
+                  styles.noMsgTxt
+                }>{`You do not have any matches user.`}</Text>
             </View>
           );
         }}
         renderItem={({item}) => (
           <TouchableOpacity
+            style={styles.itemView}
             activeOpacity={0.8}
             onPress={() => {
               {
-                // props.navigation.navigate('BrowseScreen', {
-                //     userName: item.userName,
-                //     userImg: item.userImg,
-                // })
+                props.navigation.navigate('SingleUserMessageScreen', {
+                  userNameMatch: item.userName,
+                  userImgMatch: item.userImg,
+                  userActiveStatus: item.userActiveStatus,
+                });
               }
-            }}
-            style={styles.itemView}>
+            }}>
             <View style={{flexDirection: 'row'}}>
               <Image style={styles.locationImg} source={item.userImg} />
               <TouchableOpacity activeOpacity={0.8} onPress={() => {}}>
                 <Image
                   style={{
-                    marginStart: constants.vh(-45),
+                    marginStart: constants.vh(-40),
                     width: constants.vw(25),
                     height: constants.vh(25),
                   }}
@@ -116,7 +125,7 @@ const MatchesUserScreen = (props: props) => {
             <Text
               style={{
                 ...styles.locationName,
-                fontSize: 16,
+                fontSize: constants.vw(14),
                 color: constants.colors.grey,
               }}>
               {item.userActiveStatus}
@@ -134,21 +143,22 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   locationImg: {
-    width: constants.vw(150),
-    height: constants.vh(150),
-    borderRadius: constants.vw(75),
+    width: constants.vw(120),
+    height: constants.vh(120),
+    borderRadius: constants.vw(60),
     resizeMode: 'cover',
     borderWidth: 1,
     borderColor: constants.colors.inputborderColor,
   },
   itemView: {
-    padding: constants.vw(18),
+    padding: constants.vw(15),
     alignSelf: 'center',
     justifyContent: 'center',
-    alignItems: 'center',
+    width:'50%',
+    alignItems:'center'
   },
   locationName: {
-    fontSize: 20,
+    fontSize: constants.vw(16.5),
     textAlign: 'center',
     alignSelf: 'center',
     fontWeight: '400',
@@ -158,8 +168,13 @@ const styles = StyleSheet.create({
     width: constants.vw(300),
     height: constants.vh(300),
     alignSelf: 'center',
-    marginTop: constants.vh(200),
+    marginTop: constants.vh(140),
     resizeMode: 'contain',
+  },
+  noMsgTxt: {
+    fontSize: constants.vw(15),
+    color: constants.colors.grey,
+    alignSelf: 'center',
   },
 });
 

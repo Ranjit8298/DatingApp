@@ -19,6 +19,8 @@ import MatchesUserScreen from '../screens/dashboardScreen/MatchesUserScreen';
 import BrowseScreen from '../screens/dashboardScreen/BrowseScreen';
 import SettingsScreen from '../screens/dashboardScreen/SettingsScreen';
 import AllMessageScreen from '../screens/dashboardScreen/AllMessageScreen';
+import InvitationScreen from '../screens/dashboardScreen/InvitationScreen';
+import MutualLikeScreen from '../screens/dashboardScreen/MutualLikeScreen';
 const Drawer = createDrawerNavigator();
 
 const DrawerNavigation = () => {
@@ -26,7 +28,7 @@ const DrawerNavigation = () => {
     return (
       <SafeAreaView style={{flex: 1}}>
         <DrawerContentScrollView {...props}>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             activeOpacity={0.8}
             onPress={() => {
               props.navigation.closeDrawer();
@@ -41,7 +43,7 @@ const DrawerNavigation = () => {
               source={constants.images.closeImg}
               resizeMode="cover"
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <View
             style={{
               marginTop: constants.vh(10),
@@ -79,14 +81,14 @@ const DrawerNavigation = () => {
           <DrawerItemList {...props} />
         </DrawerContentScrollView>
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           activeOpacity={0.8}
           onPress={() => {
             props.navigation.navigate('LoginScreen');
           }}
           style={styles.bottomStyle}>
           <Text style={styles.bottomTxt}>{'LOGOUT'}</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </SafeAreaView>
     );
   };
@@ -100,7 +102,7 @@ const DrawerNavigation = () => {
         drawerInactiveTintColor: constants.colors.navy,
         drawerStyle: {
           backgroundColor: constants.colors.white,
-          width: constants.vw(310),
+          width: constants.vw(280),
         },
         headerShown: false,
       }}>
@@ -141,6 +143,25 @@ const DrawerNavigation = () => {
           ),
         }}
         component={BrowseScreen}
+      />
+      <Drawer.Screen
+        name="InvitationScreen"
+        options={{
+          drawerLabel: 'Invitations',
+          drawerIcon: ({focused}) => (
+            <Image
+              source={constants.images.inviteIcon}
+              resizeMode="contain"
+              style={{
+                ...styles.icon,
+                tintColor: focused
+                  ? constants.colors.white
+                  : constants.colors.navy,
+              }}
+            />
+          ),
+        }}
+        component={InvitationScreen}
       />
       <Drawer.Screen
         name="QRCodeScannerScreen"

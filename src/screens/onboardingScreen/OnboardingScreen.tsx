@@ -1,7 +1,16 @@
-import React from "react";
-import { SafeAreaView, View, StyleSheet, Text, TouchableOpacity, FlatList, Image, StatusBar } from 'react-native';
-import constants from "../../constants";
-import CustomButton from "../../components/CustomButton";
+import React from 'react';
+import {
+  SafeAreaView,
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  FlatList,
+  Image,
+  StatusBar,
+} from 'react-native';
+import constants from '../../constants';
+import CustomButton from '../../components/CustomButton';
 import Lottie from 'lottie-react-native';
 
 interface props {
@@ -13,25 +22,37 @@ const OnboardingScreen = (props: props) => {
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle={'light-content'} />
 
-      <Lottie style={{ marginTop: constants.vh(-70) }}
-        source={require('../../assets/raw/onboarding_dating.json')} autoPlay loop />
-      <Text style={styles.txtParagraph}>{'Users going through a vetting process to ensure you never match with bots.'}</Text>
+      <Lottie
+        style={{marginTop: constants.vh(-70)}}
+        source={require('../../assets/raw/onboarding_dating.json')}
+        autoPlay
+        loop
+      />
+      <Text style={styles.txtParagraph}>
+        {
+          'Users going through a vetting process to ensure you never match with bots.'
+        }
+      </Text>
       <View style={styles.absoluteView}>
-        <CustomButton onPress={() => { props.navigation.navigate('CheckedInScreen') }} txt={constants.string.getStarted} />
+        <CustomButton
+          onPress={() => {
+            props.navigation.navigate('CheckedInScreen');
+          }}
+          txt={constants.string.getStarted}
+        />
       </View>
-
     </SafeAreaView>
-  )
-}
+  );
+};
 const styles = StyleSheet.create({
   container: {
     backgroundColor: constants.colors.white,
-    flex: 1
+    flex: 1,
   },
   absoluteView: {
     position: 'absolute',
     marginTop: constants.vh(650),
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   imageStyle: {
     width: constants.vw(235),
@@ -58,7 +79,7 @@ const styles = StyleSheet.create({
     marginStart: constants.vw(40),
     lineHeight: constants.vh(18),
     marginTop: constants.vh(10),
-    color: constants.colors.secondary
+    color: constants.colors.secondary,
   },
   txtParagraph: {
     position: 'absolute',
@@ -68,8 +89,8 @@ const styles = StyleSheet.create({
     color: constants.colors.secondary,
     fontWeight: 'bold',
     fontSize: constants.vw(16),
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 });
 
 const slides = [

@@ -18,64 +18,129 @@ interface props {
   navigation: any;
 }
 
-export const SLIDER_WIDTH = Dimensions.get('window').width + 8;
-export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.8);
+export const SLIDER_WIDTH = Dimensions.get('window').width + 9;
+export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
 
 const BrowseScreen = (props: props) => {
+  const [index, setIndex] = useState(0);
+  const isCarousel = useRef(null);
+
   const renderItem = ({item}: any) => {
     return (
-      <View>
-        <View style={styles.sliderTopView}>
-          <Image source={item.userImg} style={styles.sliderImg} />
+      <ImageBackground
+        source={item.userImg}
+        resizeMode="cover"
+        style={styles.image}
+        imageStyle={{borderRadius: constants.vw(15)}}>
+        <View style={styles.bottomView}>
+          <Text style={styles.userName}>
+            {item.userName}{' '}
+            <Text
+              style={{
+                ...styles.userName,
+                fontSize: constants.vw(16),
+                textAlign: 'center',
+              }}>
+              {item.userAge}
+            </Text>
+          </Text>
 
-          <Text style={styles.sliderTxt}>{item.userName}</Text>
-          <CustomSeprator />
-          <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={() => {}}
-            style={styles.roundViewStart}>
-            <Image style={styles.starImg} source={constants.images.starImg} />
-          </TouchableOpacity>
-          <View style={styles.likeDislikeView}>
-            <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={() => {}}
-              style={styles.bottomRoundView}>
-              <Image
+          {item.isOnline && (
+            <View style={styles.subTxtView}>
+              <View style={styles.onlineView} />
+              <Text
                 style={{
-                  ...styles.starImg,
-                  width: constants.vw(40),
-                  height: constants.vh(40),
-                }}
+                  color: constants.colors.white,
+                  marginStart: constants.vh(5),
+                }}>
+                {'online now'}
+              </Text>
+            </View>
+          )}
+
+          <View style={{...styles.subTxtView, marginTop: constants.vh(5)}}>
+            <Image
+              style={{tintColor: constants.colors.white, resizeMode: 'contain'}}
+              source={constants.images.locationIcon}
+            />
+            <Text
+              style={{
+                color: constants.colors.white,
+                marginStart: constants.vh(3),
+              }}>
+              {item.userDistance}
+            </Text>
+          </View>
+
+          <View style={{...styles.subTxtView, marginTop: constants.vh(5)}}>
+            <Image
+              style={{tintColor: constants.colors.white, resizeMode: 'contain'}}
+              source={constants.images.homeIcon}
+            />
+            <Text
+              style={{
+                color: constants.colors.white,
+                marginStart: constants.vh(4),
+              }}>
+              {item.userLocation}
+            </Text>
+          </View>
+
+          <View style={styles.btnActionView}>
+            <TouchableOpacity
+              style={styles.roundView}
+              onPress={() => {}}
+              activeOpacity={0.3}>
+              <Image
+                style={styles.roundViewImg}
                 source={constants.images.closeImg}
               />
             </TouchableOpacity>
 
             <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={() => {
-                props.navigation.navigate('MutualLikeScreen', {
-                  UserName: item.userName,
-                  UserImg: item.userImg,
-                  UserId: item.userId,
-                });
-              }}
+              onPress={() => {}}
+              activeOpacity={0.3}
               style={{
-                ...styles.bottomRoundView,
+                ...styles.roundView,
+                width: constants.vw(60),
+                height: constants.vw(60),
+                borderRadius: constants.vw(30),
                 backgroundColor: constants.colors.colorPrimary,
+                marginTop: constants.vh(-15),
               }}>
               <Image
                 style={{
-                  ...styles.starImg,
-                  width: constants.vw(40),
-                  height: constants.vh(40),
+                  ...styles.roundViewImg,
+                  tintColor: constants.colors.white,
+                  width: constants.vw(30),
+                  height: constants.vh(30),
+                  resizeMode: 'cover',
                 }}
                 source={constants.images.heartImg}
               />
             </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => {}}
+              activeOpacity={0.3}
+              style={{
+                ...styles.roundView,
+                backgroundColor: constants.colors.dark_blue,
+              }}>
+              <Image
+                style={{
+                  ...styles.roundViewImg,
+                  tintColor: constants.colors.white,
+                  width: constants.vw(25),
+                  height: constants.vh(25),
+                  resizeMode: 'cover',
+                }}
+                source={constants.images.starImg}
+              />
+            </TouchableOpacity>
           </View>
         </View>
-      </View>
+      </ImageBackground>
     );
   };
 
@@ -88,12 +153,15 @@ const BrowseScreen = (props: props) => {
           props.navigation.openDrawer();
         }}
         onMessagePress={() => {
-          props.navigation.navigate('AllMessageScreen');
+          props.navigation.navigate('FilterModal');
         }}
+        leftImg={constants.images.filterIcon}
+        rightImg={constants.images.menuImg}
       />
 
       <View style={{marginVertical: constants.vh(25)}}>
         <Carousel
+          ref={isCarousel}
           layout={'default'}
           // autoplay={true}
           // autoplayInterval={3000}
@@ -103,6 +171,7 @@ const BrowseScreen = (props: props) => {
           renderItem={renderItem}
           sliderWidth={SLIDER_WIDTH}
           itemWidth={ITEM_WIDTH}
+          onSnapToItem={index => setIndex(index)}
         />
       </View>
     </SafeAreaView>
@@ -112,67 +181,59 @@ const BrowseScreen = (props: props) => {
 const styles = StyleSheet.create({
   constainer: {
     flex: 1,
-    backgroundColor: constants.colors.white,
+    backgroundColor: constants.colors.black,
   },
-  sliderTopView: {
-    backgroundColor: constants.colors.white,
-    shadowColor: constants.colors.grey,
-    shadowOffset: {width: 4, height: 4},
-    shadowOpacity: 0.5,
-    shadowRadius: 4,
-    elevation: 7,
-    borderWidth: 5,
-    borderColor: constants.colors.inputborderColor,
-    borderRadius: constants.vw(15),
-    height: 'auto',
-    paddingBottom: constants.vw(15),
-  },
-  sliderImg: {
-    width: constants.vw(280),
-    height: constants.vh(310),
-    alignSelf: 'center',
-    resizeMode: 'cover',
-    borderRadius: constants.vw(5),
-    marginTop: constants.vh(8),
-  },
-  sliderTxt: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    alignSelf: 'center',
-    color: constants.colors.navy,
-    marginVertical: constants.vh(10),
-  },
-  roundViewStart: {
-    width: constants.vw(60),
-    height: constants.vw(60),
-    borderRadius: constants.vw(30),
-    backgroundColor: constants.colors.navy,
-    alignSelf: 'center',
+  image: {
     justifyContent: 'center',
-    marginTop: constants.vh(15),
+    height: constants.vh(700),
+    backgroundColor: constants.colors.black,
   },
-  starImg: {
-    tintColor: constants.colors.white,
-    alignSelf: 'center',
-    width: constants.vw(30),
-    height: constants.vh(30),
-    resizeMode: 'cover',
+  bottomView: {
+    width: '100%',
+    height: 'auto',
+    backgroundColor: constants.colors.black,
+    position: 'absolute',
+    bottom: 0,
+    borderBottomStartRadius: constants.vw(15),
+    borderBottomEndRadius: constants.vw(15),
+    opacity: 0.6,
+    padding: constants.vw(10),
+    backfaceVisibility: 'hidden',
   },
-  likeDislikeView: {
-    width: constants.vw(400),
-    alignSelf: 'center',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
+  userName: {
+    color: '#FFFFFF',
+    fontSize: constants.vw(24),
+    fontWeight: 'bold',
+    letterSpacing: 0.4,
+  },
+  subTxtView: {
     flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    alignContent: 'center',
+  },
+  onlineView: {
+    width: constants.vw(12),
+    height: constants.vw(12),
+    borderRadius: constants.vw(6),
+    backgroundColor: '#00FF00',
+    marginStart: constants.vh(3),
+  },
+  btnActionView: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
     marginTop: constants.vh(20),
   },
-  bottomRoundView: {
-    backgroundColor: constants.colors.grey,
-    width: constants.vw(80),
-    height: constants.vw(80),
-    borderRadius: constants.vw(40),
-    alignItems: 'center',
+  roundView: {
+    width: constants.vw(50),
+    height: constants.vw(50),
+    borderRadius: constants.vw(25),
+    backgroundColor: constants.colors.lightGrey,
     justifyContent: 'center',
+    alignItems: 'center',
+  },
+  roundViewImg: {
+    resizeMode: 'contain',
   },
 });
 
@@ -182,72 +243,120 @@ const userData = [
     userName: 'Ranjit Kumar',
     userActiveStatus: 'Active 5 minutes Ago',
     userId: 'L@1',
+    userAge: '23',
+    userDistance: '15 km away',
+    userLocation: 'Lives in Dehradun',
+    isOnline: true,
   },
   {
-    userImg: constants.images.manTwoImg,
+    userImg: constants.images.datingBgImg,
     userName: 'Chandan Kumar',
     userActiveStatus: 'Active 15 minutes Ago',
     userId: 'L@2',
+    userAge: '26',
+    userDistance: '05 km away',
+    userLocation: 'Lives in Dehradun',
+    isOnline: false,
   },
   {
     userImg: constants.images.manThreeImg,
     userName: 'Aanand Kumar',
     userActiveStatus: 'Active 50 minutes Ago',
     userId: 'L@3',
+    userAge: '24',
+    userDistance: '11 km away',
+    userLocation: 'Lives in Dehradun',
+    isOnline: false,
   },
   {
     userImg: constants.images.manTwoImg,
     userName: 'Sonu Kumar',
     userActiveStatus: 'Active Today',
     userId: 'L@4',
+    userAge: '22',
+    userDistance: '20 km away',
+    userLocation: 'Lives in Dehradun',
+    isOnline: true,
   },
   {
     userImg: constants.images.manOneImg,
     userName: 'Sagar Pawar',
     userActiveStatus: 'Online',
     userId: 'L@5',
+    userAge: '27',
+    userDistance: '13 km away',
+    userLocation: 'Lives in Dehradun',
+    isOnline: false,
   },
   {
     userImg: constants.images.manThreeImg,
     userName: 'Shivam Rawat',
     userActiveStatus: 'Online',
     userId: 'L@6',
+    userAge: '26',
+    userDistance: '08 km away',
+    userLocation: 'Lives in Dehradun',
+    isOnline: true,
   },
   {
     userImg: constants.images.manOneImg,
     userName: 'Suraj Adhaikari',
     userActiveStatus: 'Active 5 minutes Ago',
     userId: 'L@7',
+    userAge: '25',
+    userDistance: '10 km away',
+    userLocation: 'Lives in Dehradun',
+    isOnline: false,
   },
   {
-    userImg: constants.images.manTwoImg,
+    userImg: constants.images.datingBgImg,
     userName: 'Bipin',
     userActiveStatus: 'Active 55 minutes Ago',
     userId: 'L@8',
+    userAge: '26',
+    userDistance: '01 km away',
+    userLocation: 'Lives in Dehradun',
+    isOnline: false,
   },
   {
     userImg: constants.images.girlTwo,
     userName: 'Mansi',
     userActiveStatus: 'Online',
     userId: 'L@9g',
+    userAge: '27',
+    userDistance: '03 km away',
+    userLocation: 'Lives in Dehradun',
+    isOnline: true,
   },
   {
     userImg: constants.images.girlOne,
     userName: 'Simran',
     userActiveStatus: 'Online',
     userId: 'L@10g',
+    userAge: '22',
+    userDistance: '06 km away',
+    userLocation: 'Lives in Dehradun',
+    isOnline: true,
   },
   {
     userImg: constants.images.manThreeImg,
     userName: 'Rohan',
     userActiveStatus: 'Online',
     userId: 'L@11',
+    userAge: '23',
+    userDistance: '03 km away',
+    userLocation: 'Lives in Dehradun',
+    isOnline: false,
   },
   {
     userImg: constants.images.manOneImg,
     userName: 'Sahib',
     userActiveStatus: 'Online',
     userId: 'L@12',
+    userAge: '24',
+    userDistance: '02 km away',
+    userLocation: 'Lives in Dehradun',
+    isOnline: false,
   },
 ];
 

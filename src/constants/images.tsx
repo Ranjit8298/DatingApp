@@ -29,5 +29,14 @@ export default {
     manTwoImg: require('../assets/images/man_two.jpg'),
     manThreeImg: require('../assets/images/man_three.jpg'),
     logoutImg: require('../assets/images/logout.png'),
+    datingBgImg: require('../assets/images/dating_bg.jpg'),
+    homeIcon: require('../assets/images/home.png'),
+    locationIcon: require('../assets/images/location_icon.png'),
+    inviteIcon: require('../assets/images/invitation.png'),
+    confirmIcon: require('../assets/images/confirm.png'),
+    noMessageImg: require('../assets/images/no_message.jpg'),
+    filterIcon: require('../assets/images/filter.png'),
+    blockIcon: require('../assets/images/block.png'),
+    archiveIcon: require('../assets/images/archive.png'),
   };
   
