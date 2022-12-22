@@ -47,43 +47,43 @@ const AllMessageScreen = (props: props) => {
     }
   };
 
-  const LeftSwipeActions = (item: any) => {
-    return (
-      <TouchableOpacity
-        activeOpacity={0.8}
-        onPress={() => {
-          console.log(item);
-        }}
-        style={styles.swipeView}>
-        <Image
-          style={{tintColor: constants.colors.navy}}
-          source={constants.images.archiveIcon}
-        />
-        <Text style={{color: constants.colors.navy}}>{'Archive'}</Text>
-      </TouchableOpacity>
-    );
-  };
-  const rightSwipeActions = (item: any) => {
-    return (
-      <TouchableOpacity
-        activeOpacity={0.8}
-        onPress={() => {
-          console.log(item);
-        }}
-        style={{
-          ...styles.swipeView,
-          marginStart: constants.vh(5),
-          marginEnd: constants.vh(0),
-          borderColor: constants.colors.colorPrimary,
-        }}>
-        <Image
-          style={{tintColor: constants.colors.colorPrimary}}
-          source={constants.images.blockIcon}
-        />
-        <Text style={{color: constants.colors.colorPrimary}}>{'Block'}</Text>
-      </TouchableOpacity>
-    );
-  };
+  // const LeftSwipeActions = (item: any) => {
+  //   return (
+  //     <TouchableOpacity
+  //       activeOpacity={0.8}
+  //       onPress={() => {
+  //         console.log(item);
+  //       }}
+  //       style={styles.swipeView}>
+  //       <Image
+  //         style={{tintColor: constants.colors.navy}}
+  //         source={constants.images.archiveIcon}
+  //       />
+  //       <Text style={{color: constants.colors.navy}}>{'Archive'}</Text>
+  //     </TouchableOpacity>
+  //   );
+  // };
+  // const rightSwipeActions = (item: any) => {
+  //   return (
+  //     <TouchableOpacity
+  //       activeOpacity={0.8}
+  //       onPress={() => {
+  //         console.log(item);
+  //       }}
+  //       style={{
+  //         ...styles.swipeView,
+  //         marginStart: constants.vh(5),
+  //         marginEnd: constants.vh(0),
+  //         borderColor: constants.colors.colorPrimary,
+  //       }}>
+  //       <Image
+  //         style={{tintColor: constants.colors.colorPrimary}}
+  //         source={constants.images.blockIcon}
+  //       />
+  //       <Text style={{color: constants.colors.colorPrimary}}>{'Block'}</Text>
+  //     </TouchableOpacity>
+  //   );
+  // };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -128,10 +128,6 @@ const AllMessageScreen = (props: props) => {
           );
         }}
         renderItem={({item, index}) => (
-          <Swipeable
-            renderLeftActions={item => LeftSwipeActions(item)}
-            renderRightActions={item => rightSwipeActions(item)}
-            friction={2}>
             <CustomMessageBox
               messageTime={item.messageTime}
               userImg={item.userImg}
@@ -145,7 +141,6 @@ const AllMessageScreen = (props: props) => {
                 });
               }}
             />
-          </Swipeable>
         )}
       />
     </SafeAreaView>

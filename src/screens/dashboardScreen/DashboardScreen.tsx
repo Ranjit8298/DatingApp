@@ -11,27 +11,52 @@ import {
 import CustomHeader from '../../components/CustomHeader';
 import CustomSearchBox from '../../components/CustomSearchBox';
 import constants from '../../constants';
-// import Router from '../../navigator/routes';
 import {connect} from 'react-redux';
+import {firebase} from '@react-native-firebase/database';
+import {saveSignupUserDetails, saveSingleUserDetails} from '../../modules/auth';
 
 interface props {
   navigation: any;
   route: any;
   saveCurrentAddress: any;
+  mode: any;
+  mobileNumber: any;
+  saveSignupUserDetails: any;
+  saveSingleUserDetails: any;
 }
 
 const DashboardScreen = (props: props) => {
   const [location, setLoaction] = useState('');
   const [filteredDataSource, setFilteredDataSource] = useState<any[]>([]);
   const [masterDataSource, setMasterDataSource] = useState<any[]>([]);
+  const [signupUserData, setSignupUserData] = useState<any[]>([]);
+  const [refreshing, setrefreshing] = useState(false);
 
-  console.log('dashboardAdd===>', props.saveCurrentAddress);
-
-  // Router.resetNew(props.navigation, 'RootNavigator', {});
   useEffect(() => {
+    getDataFromFirebase();
+    props.mode === 'signup' && signUpUserDetails();
+    
     setFilteredDataSource(userData);
     setMasterDataSource(userData);
   }, []);
+
+  const getDataFromFirebase = () => {
+    firebase
+      .database()
+      .ref()
+      .on('value', snapshot => {
+        let responselist = snapshot.val();
+        setSignupUserData(Object.values(responselist));
+      });
+  };
+
+  const signUpUserDetails = () => {
+    signupUserData.map((user: any) => {
+      if (user.userMobileNumber === props.mobileNumber) {
+        props.saveSingleUserDetails(user);
+      }
+    });
+  };
 
   const searchFilterFunction = (text: any) => {
     // Check if searched text is not blank
@@ -49,6 +74,13 @@ const DashboardScreen = (props: props) => {
       setFilteredDataSource(masterDataSource);
       setLoaction(text);
     }
+  };
+
+  const onRefresh = () => {
+    setrefreshing(true);
+    setTimeout(() => {
+      setrefreshing(false);
+    }, 2000);
   };
 
   return (
@@ -82,6 +114,8 @@ const DashboardScreen = (props: props) => {
         showsVerticalScrollIndicator={false}
         data={filteredDataSource}
         numColumns={2}
+        refreshing={refreshing}
+        onRefresh={onRefresh}
         ListEmptyComponent={() => {
           return (
             <View style={{justifyContent: 'center'}}>
@@ -139,8 +173,8 @@ const styles = StyleSheet.create({
     padding: constants.vw(15),
     alignSelf: 'center',
     justifyContent: 'center',
-    alignItems:'center',
-    width:'50%'
+    alignItems: 'center',
+    width: '50%',
   },
   locationName: {
     fontSize: constants.vw(16.5),
@@ -235,8 +269,13 @@ const userData = [
 
 const mapStateToProps = (state: any) => ({
   saveCurrentAddress: state.auth.saveCurrentAddress,
+  mode: state.auth.saveMode,
+  mobileNumber: state.auth.saveMobileNumber,
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  saveSignupUserDetails: (data: any) => saveSignupUserDetails(data),
+  saveSingleUserDetails: (data: any) => saveSingleUserDetails(data),
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardScreen);

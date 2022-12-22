@@ -32,9 +32,7 @@ const OtpScreen = (props: props) => {
 
   const [confirm, setConfirm] = useState(null);
 
-  const mobile = props.route.params.mobile;
-  const mode = props.route.params?.mode;
-  console.log('mobile==>', mobile);
+  const mobile = props.route.params?.mobile;
 
   const inputRef1: any = createRef();
   const inputRef2: any = createRef();
@@ -48,19 +46,19 @@ const OtpScreen = (props: props) => {
 
   useEffect(() => {
     signUpMethod(mobile);
-    setCountDown();
+    // setCountDown();
   }, []);
 
-  const setCountDown = () => {
-    let interval = setInterval(() => {
-      setTimer(lastTimerCount => {
-        lastTimerCount <= 1 && clearInterval(interval);
-        return lastTimerCount - 1;
-      });
-    }, 1000); //each count lasts for a second
-    //cleanup the interval on complete
-    return () => clearInterval(interval);
-  };
+  // const setCountDown = () => {
+  //   let interval = setInterval(() => {
+  //     setTimer(lastTimerCount => {
+  //       lastTimerCount <= 1 && clearInterval(interval);
+  //       return lastTimerCount - 1;
+  //     });
+  //   }, 1000); //each count lasts for a second
+  //   //cleanup the interval on complete
+  //   return () => clearInterval(interval);
+  // };
 
   async function signUpMethod(mobile: any) {
     try {
@@ -89,9 +87,7 @@ const OtpScreen = (props: props) => {
       CommonFunction.isToast('error', 'Please Enter Correct OTP');
     } else {
       confirmVerificationCode(otp);
-      props.navigation.navigate('BasicInformationScreen', {
-        mode: mode,
-      });
+      props.navigation.navigate('BasicInformationScreen');
     }
   };
 
@@ -234,24 +230,12 @@ const OtpScreen = (props: props) => {
         />
       </View>
 
-      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-        <Text
-          style={{
-            ...styles.resendTxt,
-            marginStart: constants.vh(30),
-            marginTop: constants.vh(23),
-          }}>
-          {`${timerCount + ''} sec`}
-        </Text>
-        {timerCount === 0 && (
-          <TouchableOpacity
-            activeOpacity={0.8}
-            style={styles.resendView}
-            onPress={() => {}}>
-            <Text style={styles.resendTxt}>{constants.string.resendOtp}</Text>
-          </TouchableOpacity>
-        )}
-      </View>
+      <TouchableOpacity
+        activeOpacity={0.8}
+        style={styles.resendView}
+        onPress={() => {}}>
+        <Text style={styles.resendTxt}>{constants.string.resendOtp}</Text>
+      </TouchableOpacity>
 
       <CustomButton
         onPress={() => {

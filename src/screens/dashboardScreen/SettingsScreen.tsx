@@ -14,8 +14,13 @@ import CustomHeader from '../../components/CustomHeader';
 import constants from '../../constants';
 import CustomSeprator from '../../components/CustomSeprator';
 import Router from '../../navigator/Router';
+import {connect} from 'react-redux';
+import {Logout} from '../../modules/auth';
+import CommonFunction from '../../utils/CommonFunction';
+
 interface props {
   navigation: any;
+  Logout: any;
 }
 const SettingsScreen = (props: props) => {
   const [isEnabled, setIsEnabled] = React.useState(false);
@@ -124,7 +129,12 @@ const SettingsScreen = (props: props) => {
         activeOpacity={0.8}
         style={styles.signOutView}
         onPress={() => {
-          Router.resetNew(props.navigation, 'RootNavigator', {});
+          // props.Logout(() => {
+          //   Router.resetNew(props.navigation, 'RootNavigator', {});
+          // });
+          props.Logout();
+          CommonFunction.isToast('success', 'Logout Successfully');
+          props.navigation.navigate('CheckedInScreen');
         }}>
         <Image
           style={{tintColor: constants.colors.colorPrimary}}
@@ -205,4 +215,11 @@ const styles = StyleSheet.create({
     marginStart: constants.vh(8),
   },
 });
-export default SettingsScreen;
+
+const mapStateToProps = (state: any) => ({});
+
+const mapDispatchToProps = {
+  Logout: () => Logout(),
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsScreen);

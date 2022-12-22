@@ -25,7 +25,6 @@ const FilterModal = (props: props) => {
   const [maxA, setMaxA] = useState(100);
   const [valueA, setValueA] = useState();
 
-  console.log('valueA==>', valueA);
   const [male, setMale] = useState(false);
   const [female, setFemale] = useState(false);
   const [everyone, setEveryone] = useState(false);

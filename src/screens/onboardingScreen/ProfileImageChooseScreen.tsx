@@ -24,13 +24,14 @@ interface props {
 
 const ProfileImageChooseScreen = (props: props) => {
   const [image, saveImage] = useState<{[key: string]: any}>({});
-  const mode = props.route.params?.mode;
 
+  console.log('image==>',image);
   const saveUserImg = () => {
     database()
       .ref(props.saveNewReference)
       .update({
         userProfileImg: image.data,
+        fileExt:image.mime,
       })
       .then(
         () =>
@@ -38,9 +39,7 @@ const ProfileImageChooseScreen = (props: props) => {
             'success',
             'Your Profile Image saved successfully',
           ),
-        props.navigation.navigate('AccessLoactionScreen', {
-          mode: mode,
-        }),
+        props.navigation.navigate('AccessLoactionScreen'),
       );
   };
 
@@ -76,9 +75,7 @@ const ProfileImageChooseScreen = (props: props) => {
     <SafeAreaView style={styles.container}>
       <TouchableOpacity
         onPress={() => {
-          props.navigation.navigate('AccessLoactionScreen', {
-            mode: mode,
-          });
+          props.navigation.navigate('AccessLoactionScreen');
         }}
         activeOpacity={0.8}
         style={styles.skipView}>

@@ -7,7 +7,6 @@ import {
   Alert,
   TouchableOpacity,
   Platform,
-  ToastAndroid,
 } from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import constants from '../../constants';
@@ -22,13 +21,13 @@ interface props {
   route: any;
   saveNewReference: any;
   saveCurrentAddress:any;
+  mode:any;
 }
 
 const MapViewScreen = (props: props) => {
   const [address, setRealAddress] = React.useState('');
   const [toggle, setToggle] = React.useState(false);
 
-  const mode = props.route.params?.mode;
   const latitude = props.route.params.lat;
   const longitude = props.route.params.long;
   const accuracy = props.route.params.accuracy;
@@ -45,7 +44,7 @@ const MapViewScreen = (props: props) => {
   };
 
   console.log('toggle===>', toggle);
-  if (toggle === true && mode === 'signup') {
+  if (toggle === true && props.mode === 'signup') {
     saveLocation();
   }
 
@@ -258,6 +257,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state: any) => ({
   saveNewReference: state.auth.saveNewReference,
+  mode: state.auth.saveMode,
 });
 
 const mapDispatchToProps = {

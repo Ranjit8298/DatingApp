@@ -33,8 +33,8 @@ const CustomOtpBox = (props: props) => {
 };
 const styles = StyleSheet.create({
   codeBoxStyle: {
-    width: constants.vw(52),
-    height: constants.vh(52),
+    width: constants.vw(43),
+    height: constants.vh(43),
     borderWidth: 1,
     borderRadius: constants.vw(4),
     borderColor: constants.colors.inputborderColor,

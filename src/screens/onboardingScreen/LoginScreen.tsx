@@ -14,13 +14,14 @@ import database, {firebase} from '@react-native-firebase/database';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import CommonFunction from '../../utils/CommonFunction';
 import {connect} from 'react-redux';
-import {saveSingleUserDetails, saveUserDetails} from '../../modules/auth';
+import {saveSingleUserDetails, saveUserDetails,saveMode} from '../../modules/auth';
 
 interface props {
   navigation: any;
   saveUserDetails: any;
   saveUserDetailsData: any;
   saveSingleUserDetails: any;
+  saveMode:any;
 }
 
 const LoginScreen = (props: props) => {
@@ -42,32 +43,28 @@ const LoginScreen = (props: props) => {
   };
 
   const validateLogin = () => {
-    props.saveUserDetailsData.map((user: any) => {
-      if (user.userMobileNumber === email) {
-        props.navigation.navigate('AccessLoactionScreen');
-        CommonFunction.isToast('success', 'Login Successfully');
-        setEmail('');
-        setPassword('');
-        props.saveSingleUserDetails(user);
-      }
-    });
-    // let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
-    // let mobReg = /^(\+\d{1,3}[- ]?)?\d{10}$/;
-    // if (CommonFunction.isNullUndefined(email)) {
-    //   ToastAndroid.show('Please Enter Mobile Number', ToastAndroid.SHORT);
-    // } else if (mobReg.test(email) === false) {
-    //   ToastAndroid.show('Please Enter Correct Mobile Number', ToastAndroid.SHORT);
-    // } else if (
-    //   CommonFunction.isNullUndefined(password) &&
-    //   password.length < 4
-    // ) {
-    //   ToastAndroid.show('Please enter 4 digit password', ToastAndroid.SHORT);
-    // } else if (userMobileNumber === email || userEmail === email) {
-    //   props.navigation.navigate('AccessLoactionScreen');
-    //   ToastAndroid.show('Login Successfully', ToastAndroid.SHORT);
-    // } else {
-    //   ToastAndroid.show('You are not register with us.', ToastAndroid.SHORT);
-    // }
+    let mobReg = /^(\+\d{1,3}[- ]?)?\d{10}$/;
+    if (CommonFunction.isNullUndefined(email)) {
+      CommonFunction.isToast('error', 'Please Enter Mobile Number');
+    } else if (mobReg.test(email) === false) {
+      CommonFunction.isToast('error', 'Please Enter Correct Mobile Number');
+    } else if (
+      CommonFunction.isNullUndefined(password) &&
+      password.length < 4
+    ) {
+      CommonFunction.isToast('error', 'Please enter 4 digit password');
+    } else {
+      props.saveUserDetailsData.map((user: any) => {
+        if (user.userMobileNumber === email) {
+          props.navigation.navigate('AccessLoactionScreen');
+          CommonFunction.isToast('success', 'Login Successfully');
+          setEmail('');
+          setPassword('');
+          props.saveSingleUserDetails(user);
+          props.saveMode('login');
+        }
+      });
+    }
   };
 
   return (
@@ -226,6 +223,7 @@ const mapStateToProps = (state: any) => ({
 const mapDispatchToProps = {
   saveUserDetails: (data: any) => saveUserDetails(data),
   saveSingleUserDetails: (data: any) => saveSingleUserDetails(data),
+  saveMode: (data: any) => saveMode(data),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);

@@ -21,29 +21,22 @@ import SettingsScreen from '../screens/dashboardScreen/SettingsScreen';
 import AllMessageScreen from '../screens/dashboardScreen/AllMessageScreen';
 import InvitationScreen from '../screens/dashboardScreen/InvitationScreen';
 import MutualLikeScreen from '../screens/dashboardScreen/MutualLikeScreen';
+import {connect} from 'react-redux';
+
 const Drawer = createDrawerNavigator();
 
-const DrawerNavigation = () => {
+interface props {
+  saveSingleUserDetails: any;
+  saveSignupUserDetails:any;
+  mode:any;
+}
+
+const DrawerNavigation = (props: props) => {
+  const {userFirstName, userProfileImg, fileExt} = props.saveSingleUserDetails;
   const CustomDrawerContent = (props: any) => {
     return (
       <SafeAreaView style={{flex: 1}}>
         <DrawerContentScrollView {...props}>
-          {/* <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={() => {
-              props.navigation.closeDrawer();
-            }}>
-            <Image
-              style={{
-                alignSelf: 'flex-end',
-                marginEnd: constants.vw(10),
-                marginTop: constants.vw(5),
-                tintColor: constants.colors.red,
-              }}
-              source={constants.images.closeImg}
-              resizeMode="cover"
-            />
-          </TouchableOpacity> */}
           <View
             style={{
               marginTop: constants.vh(10),
@@ -51,7 +44,7 @@ const DrawerNavigation = () => {
             }}>
             <Image
               style={styles.userImg}
-              source={constants.images.manThreeImg}
+              source={{uri: `data:${fileExt};base64,${userProfileImg}`}}
             />
             <Text
               style={{
@@ -62,7 +55,7 @@ const DrawerNavigation = () => {
                 fontWeight: '400',
                 letterSpacing: 0.3,
               }}>
-              {'Ranjit Kumar'}
+              {userFirstName}
             </Text>
             <TouchableOpacity activeOpacity={0.8} onPress={() => {}}>
               <Text
@@ -277,4 +270,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DrawerNavigation;
+const mapStateToProps = (state: any) => ({
+  saveSingleUserDetails: state.auth.saveSingleUserDetails,
+  saveSignupUserDetails: state.auth.saveSignupUserDetails,
+  mode: state.auth.saveMode,
+});
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DrawerNavigation);

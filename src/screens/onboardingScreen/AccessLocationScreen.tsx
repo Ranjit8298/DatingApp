@@ -24,8 +24,6 @@ const AccessLoactionScreen = (props: props) => {
   const [longitude, setlongitude] = useState('');
   const [accuracy, setAccuracy] = useState('');
 
-  const mode = props.route.params?.mode;
-
   useEffect(() => {
     locationPermission();
   }, []);
@@ -164,7 +162,6 @@ const AccessLoactionScreen = (props: props) => {
               lat: latitude,
               long: longitude,
               accuracy: accuracy,
-              mode:mode,
             });
           }
         }}

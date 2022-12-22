@@ -11,21 +11,23 @@ import CustomButton from '../../components/CustomButton';
 import CustomInputBox from '../../components/CustomInputBox';
 import constants from '../../constants';
 import CustomBackButton from '../../components/CustomBackButton';
-import 'react-native-get-random-values'
+import 'react-native-get-random-values';
 import {v4 as uuidv4} from 'uuid';
 import CommonFunction from '../../utils/CommonFunction';
 import database from '@react-native-firebase/database';
 import {connect} from 'react-redux';
-import {saveNewReference} from '../../modules/auth';
+import {saveNewReference, saveMode, saveMobileNumber} from '../../modules/auth';
 
 interface props {
   navigation: any;
   saveNewReference: any;
+  saveMode: any;
+  saveMobileNumber: any;
 }
 
 const SignUpScreen = (props: props) => {
   const [mobile, setMobile] = useState('');
- 
+
   const saveSignUpData = () => {
     let randomNumber = Math.floor(100000 + Math.random() * 900000);
     let userRefNumber = `userDetails_database_${randomNumber}`;
@@ -49,12 +51,11 @@ const SignUpScreen = (props: props) => {
     } else if (reg.test(mobile) === false) {
       CommonFunction.isToast('error', 'Please Enter Correct Mobile Number');
     } else {
-      props.navigation.navigate('OtpScreen', {
-        mobile: mobile,
-        mode: 'signup',
-      });
+      props.navigation.navigate('OtpScreen', {mobile: mobile});
       setMobile('');
       saveSignUpData();
+      props.saveMode('signup');
+      props.saveMobileNumber(mobile);
     }
   };
 
@@ -170,12 +171,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state: any) => ({
-  // todoDataList: state.todo.todoData,
-});
+const mapStateToProps = (state: any) => ({});
 
 const mapDispatchToProps = {
   saveNewReference: (data: any) => saveNewReference(data),
+  saveMode: (data: any) => saveMode(data),
+  saveMobileNumber: (data: any) => saveMobileNumber(data),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUpScreen);

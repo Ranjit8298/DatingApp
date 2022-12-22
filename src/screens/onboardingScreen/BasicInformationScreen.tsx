@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   SafeAreaView,
   Text,
@@ -16,6 +16,7 @@ import CustomBackButton from '../../components/CustomBackButton';
 import database from '@react-native-firebase/database';
 import {connect} from 'react-redux';
 import CommonFunction from '../../utils/CommonFunction';
+import moment from 'moment';
 
 interface props {
   navigation: any;
@@ -31,14 +32,31 @@ const BasicInformationScreen = (props: props) => {
   const [female, setFemale] = useState(false);
 
   const [gender, setGender] = useState(true);
-  const mode = props.route.params?.mode;
+
+  const currentDate = new Date(date).toISOString();
+  const getFormetedDate = moment(currentDate).utc().format('YYYY-MM-DD');
+  console.log('getFormetedDate===>', getFormetedDate);
+  // maximumDate={new Date(year - 18, month, day)}
+  const getYear = new Date(getFormetedDate).getFullYear();
+  const getMonth = new Date(getFormetedDate).getMonth();
+  const getDay = new Date(getFormetedDate).getDay();
+  const getDate = new Date(getFormetedDate).getDate();
+
+  const getMaxDate = new Date(getYear - 18, getMonth, getDay);
+  const getMaxFormetedDate = moment(getMaxDate).utc().format('YYYY-MM-DD');
+  // console.log('getMaxDate===>', getMaxDate);
+  // console.log('getMaxFormetedDate===>', getMaxFormetedDate);
+  // console.log('getYear==>', getYear);
+  // console.log('getMonth==>', getMonth);
+  // console.log('getday==>', getDay);
+  // console.log('getDate==>', getDate);
 
   const saveBasicInfoData = () => {
     database()
       .ref(props.saveNewReference)
       .update({
         userFirstName: name,
-        userBirthday: date,
+        userBirthday: getFormetedDate,
         userGender: male === true ? 'male' : 'female',
         userEmail: email,
       })
@@ -78,9 +96,7 @@ const BasicInformationScreen = (props: props) => {
     } else if (reg.test(email) === false) {
       CommonFunction.isToast('error', 'Please Enter Correct Email');
     } else {
-      props.navigation.navigate('ProfileImageChooseScreen', {
-        mode: mode,
-      });
+      props.navigation.navigate('ProfileImageChooseScreen');
       saveBasicInfoData();
     }
   };
@@ -129,6 +145,7 @@ const BasicInformationScreen = (props: props) => {
             mode="date"
             androidVariant="nativeAndroid"
             textColor="#fff"
+            // maximumDate={new Date(getMaxFormetedDate)}
           />
           <Text style={styles.txtInputHeader}>{constants.string.gender}</Text>
           <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
