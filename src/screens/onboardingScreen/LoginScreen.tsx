@@ -62,7 +62,7 @@ const LoginScreen = (props: props) => {
           setPassword('');
           props.saveSingleUserDetails(user);
           props.saveMode('login');
-        }
+        } 
       });
     }
   };

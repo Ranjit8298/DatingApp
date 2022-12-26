@@ -38,5 +38,8 @@ export default {
     filterIcon: require('../assets/images/filter.png'),
     blockIcon: require('../assets/images/block.png'),
     archiveIcon: require('../assets/images/archive.png'),
+    voiceIcon: require('../assets/images/voice.png'),
+    imageIcon: require('../assets/images/image.png'),
+    removeIcon: require('../assets/images/remove.png'),
   };
   

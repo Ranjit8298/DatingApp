@@ -138,6 +138,7 @@ const AllMessageScreen = (props: props) => {
               onPress={() => {
                 props.navigation.navigate('SingleUserMessageScreen', {
                   userName: item.userName,
+                  userImg: item.userImg,
                 });
               }}
             />
