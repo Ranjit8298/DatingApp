@@ -12,7 +12,6 @@ import {
 import CustomHeader from '../../components/CustomHeader';
 import constants from '../../constants';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
-import CustomSeprator from '../../components/CustomSeprator';
 
 interface props {
   navigation: any;
@@ -23,7 +22,21 @@ export const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.9);
 
 const BrowseScreen = (props: props) => {
   const [index, setIndex] = useState(0);
-  const isCarousel = useRef(null);
+  const [like, setLike] = useState(false);
+  const [nope, setNope] = useState(false);
+  const ref = React.useRef();
+
+  const likeAction = () => {
+    if (like === false) {
+      setLike(true);
+    }
+  };
+
+  const nopeAction = () => {
+    if (nope === false) {
+      setNope(true);
+    }
+  };
 
   const renderItem = ({item}: any) => {
     return (
@@ -89,7 +102,9 @@ const BrowseScreen = (props: props) => {
           <View style={styles.btnActionView}>
             <TouchableOpacity
               style={styles.roundView}
-              onPress={() => {}}
+              onPress={() => {
+                ref.current?.snapToNext?.();
+              }}
               activeOpacity={0.3}>
               <Image
                 style={styles.roundViewImg}
@@ -98,7 +113,9 @@ const BrowseScreen = (props: props) => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() => {}}
+              onPress={() => {
+                ref.current?.snapToNext?.();
+              }}
               activeOpacity={0.3}
               style={{
                 ...styles.roundView,
@@ -121,7 +138,9 @@ const BrowseScreen = (props: props) => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() => {}}
+              onPress={() => {
+                ref.current?.snapToNext?.();
+              }}
               activeOpacity={0.3}
               style={{
                 ...styles.roundView,
@@ -161,12 +180,10 @@ const BrowseScreen = (props: props) => {
 
       <View style={{marginVertical: constants.vh(25)}}>
         <Carousel
-          ref={isCarousel}
+          ref={ref}
           layout={'default'}
-          // autoplay={true}
-          // autoplayInterval={3000}
           showsVerticalScrollIndicator={false}
-          loop={false}
+          loop={true}
           data={userData}
           renderItem={renderItem}
           sliderWidth={SLIDER_WIDTH}

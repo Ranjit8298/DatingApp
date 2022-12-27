@@ -3,6 +3,7 @@ import {SafeAreaView, View, StyleSheet, Text, Image} from 'react-native';
 import CustomButton from '../../components/CustomButton';
 import CustomHeader from '../../components/CustomHeader';
 import constants from '../../constants';
+import Lottie from 'lottie-react-native';
 
 interface props {
   navigation: any;
@@ -39,7 +40,13 @@ const MutualLikeScreen = (props: props) => {
           />
           <Image style={styles.userImg} source={UserImg} />
         </View>
-        <Image style={styles.heartImg} source={constants.images.heartImg} />
+        {/* <Image style={styles.heartImg} source={constants.images.heartImg} /> */}
+        <Lottie
+          style={styles.heartImg}
+          source={require('../../assets/raw/heart_anim.json')}
+          autoPlay
+          loop
+        />
         <Text style={styles.matchHeader}>{constants.string.itIsMatch}</Text>
         <Text
           style={{...styles.matchHeader, fontSize: 16, textAlign: 'center'}}>
@@ -112,8 +119,8 @@ const styles = StyleSheet.create({
   heartImg: {
     alignSelf: 'center',
     tintColor: constants.colors.colorPrimary,
-    width: constants.vw(28),
-    height: constants.vh(28),
+    width: constants.vw(35),
+    height: constants.vh(35),
     resizeMode: 'contain',
   },
   matchHeader: {
