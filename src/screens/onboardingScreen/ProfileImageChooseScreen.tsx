@@ -25,7 +25,7 @@ interface props {
 const ProfileImageChooseScreen = (props: props) => {
   const [image, saveImage] = useState<{[key: string]: any}>({});
 
-  console.log('image==>',image);
+  // console.log('image==>',image);
   const saveUserImg = () => {
     database()
       .ref(props.saveNewReference)

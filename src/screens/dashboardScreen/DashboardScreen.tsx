@@ -13,7 +13,7 @@ import CustomSearchBox from '../../components/CustomSearchBox';
 import constants from '../../constants';
 import {connect} from 'react-redux';
 import {firebase} from '@react-native-firebase/database';
-import {saveSignupUserDetails, saveSingleUserDetails} from '../../modules/auth';
+import {saveUserDetails, saveSingleUserDetails} from '../../modules/auth';
 
 interface props {
   navigation: any;
@@ -21,21 +21,21 @@ interface props {
   saveCurrentAddress: any;
   mode: any;
   mobileNumber: any;
-  saveSignupUserDetails: any;
   saveSingleUserDetails: any;
+  saveUserDetails: any;
+  saveUserDetailsData: any;
 }
 
 const DashboardScreen = (props: props) => {
   const [location, setLoaction] = useState('');
   const [filteredDataSource, setFilteredDataSource] = useState<any[]>([]);
   const [masterDataSource, setMasterDataSource] = useState<any[]>([]);
-  const [signupUserData, setSignupUserData] = useState<any[]>([]);
   const [refreshing, setrefreshing] = useState(false);
 
   useEffect(() => {
     getDataFromFirebase();
-    props.mode === 'signup' && signUpUserDetails();
-    
+    signUpUserDetails();
+
     setFilteredDataSource(userData);
     setMasterDataSource(userData);
   }, []);
@@ -46,12 +46,12 @@ const DashboardScreen = (props: props) => {
       .ref()
       .on('value', snapshot => {
         let responselist = snapshot.val();
-        setSignupUserData(Object.values(responselist));
+        props.saveUserDetails(Object.values(responselist));
       });
   };
 
   const signUpUserDetails = () => {
-    signupUserData.map((user: any) => {
+    props.saveUserDetailsData.map((user: any) => {
       if (user.userMobileNumber === props.mobileNumber) {
         props.saveSingleUserDetails(user);
       }
@@ -271,11 +271,12 @@ const mapStateToProps = (state: any) => ({
   saveCurrentAddress: state.auth.saveCurrentAddress,
   mode: state.auth.saveMode,
   mobileNumber: state.auth.saveMobileNumber,
+  saveUserDetailsData: state.auth.saveUserDetails,
 });
 
 const mapDispatchToProps = {
-  saveSignupUserDetails: (data: any) => saveSignupUserDetails(data),
   saveSingleUserDetails: (data: any) => saveSingleUserDetails(data),
+  saveUserDetails: (data: any) => saveUserDetails(data),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardScreen);

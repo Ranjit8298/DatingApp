@@ -5,7 +5,6 @@ import {
   SAVE_CURRENT_ADDRESS,
   SAVE_MODE,
   SAVE_MOBILE_NUMBER,
-  SAVE_SIGN_UP_USER_DETAILS,
   RESET,
 } from './type';
 
@@ -59,15 +58,6 @@ export const saveMobileNumber = (data: any) => {
     dispatch({
       type: SAVE_MOBILE_NUMBER,
       payload: {saveMobileNumber: data},
-    });
-  };
-};
-
-export const saveSignupUserDetails = (data: any) => {
-  return (dispatch: any) => {
-    dispatch({
-      type: SAVE_SIGN_UP_USER_DETAILS,
-      payload: {saveSignupUserDetails: data},
     });
   };
 };

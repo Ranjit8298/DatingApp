@@ -94,9 +94,9 @@ const AccessLoactionScreen = (props: props) => {
 
       Geolocation.getCurrentPosition(
         position => {
-          console.log(position);
+          // console.log(position);
           let cordinate = position.coords;
-          console.log('cordinate==>', cordinate);
+          // console.log('cordinate==>', cordinate);
           let lati = cordinate.latitude + '';
           let longi = cordinate.longitude + '';
           let accuracy = cordinate.accuracy + '';
@@ -104,9 +104,9 @@ const AccessLoactionScreen = (props: props) => {
           setlongitude(longi);
           setAccuracy(accuracy);
 
-          console.log('latitude==>', lati);
-          console.log('longitude==>', longi);
-          console.log('longitude==>', accuracy);
+          // console.log('latitude==>', lati);
+          // console.log('longitude==>', longi);
+          // console.log('longitude==>', accuracy);
         },
         error => {
           // See error code charts below.

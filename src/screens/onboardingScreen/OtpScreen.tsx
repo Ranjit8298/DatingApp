@@ -64,7 +64,7 @@ const OtpScreen = (props: props) => {
     try {
       const confirmation = await auth().signInWithPhoneNumber(`+91 ${mobile}`);
       setConfirm(confirmation);
-      console.log(confirmation);
+      // console.log(confirmation);
     } catch (error) {
       console.log(error);
     }

@@ -14,19 +14,24 @@ import database, {firebase} from '@react-native-firebase/database';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import CommonFunction from '../../utils/CommonFunction';
 import {connect} from 'react-redux';
-import {saveSingleUserDetails, saveUserDetails,saveMode} from '../../modules/auth';
+import {
+  saveSingleUserDetails,
+  saveUserDetails,
+  saveMode,
+} from '../../modules/auth';
 
 interface props {
   navigation: any;
   saveUserDetails: any;
   saveUserDetailsData: any;
   saveSingleUserDetails: any;
-  saveMode:any;
+  saveMode: any;
 }
 
 const LoginScreen = (props: props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [allUserData, saveAllUserData] = useState<any[]>([]);
 
   useEffect(() => {
     getDataFromFirebase();
@@ -38,9 +43,11 @@ const LoginScreen = (props: props) => {
       .ref()
       .on('value', snapshot => {
         let responselist = snapshot.val();
-        props.saveUserDetails(Object.values(responselist));
+        saveAllUserData(Object.values(responselist));
       });
   };
+
+  console.log('allUserData==>', allUserData)
 
   const validateLogin = () => {
     let mobReg = /^(\+\d{1,3}[- ]?)?\d{10}$/;
@@ -54,7 +61,7 @@ const LoginScreen = (props: props) => {
     ) {
       CommonFunction.isToast('error', 'Please enter 4 digit password');
     } else {
-      props.saveUserDetailsData.map((user: any) => {
+      allUserData.map((user: any) => {
         if (user.userMobileNumber === email) {
           props.navigation.navigate('AccessLoactionScreen');
           CommonFunction.isToast('success', 'Login Successfully');
@@ -62,7 +69,7 @@ const LoginScreen = (props: props) => {
           setPassword('');
           props.saveSingleUserDetails(user);
           props.saveMode('login');
-        } 
+        }
       });
     }
   };

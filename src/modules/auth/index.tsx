@@ -5,7 +5,6 @@ import {
   saveCurrentAddress,
   saveMode,
   saveMobileNumber,
-  saveSignupUserDetails,
   Logout,
 } from './action';
 import reducers from './reducer';
@@ -16,7 +15,6 @@ export {
   saveCurrentAddress,
   saveMode,
   saveMobileNumber,
-  saveSignupUserDetails,
   Logout,
 };
 

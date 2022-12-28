@@ -43,7 +43,7 @@ const MapViewScreen = (props: props) => {
       );
   };
 
-  console.log('toggle===>', toggle);
+  // console.log('toggle===>', toggle);
   if (toggle === true && props.mode === 'signup') {
     saveLocation();
   }
@@ -54,9 +54,9 @@ const MapViewScreen = (props: props) => {
   const lonDelta = accuracy / oneDegreeOfLongitudeInMeters;
 
   useEffect(() => {
-    console.log('lat==>', latitude);
-    console.log('long==>', longitude);
-    console.log('accuracy==>', accuracy);
+    // console.log('lat==>', latitude);
+    // console.log('long==>', longitude);
+    // console.log('accuracy==>', accuracy);
 
     getAddressFromCoordinates({latitude, longitude});
   }, []);
@@ -76,7 +76,7 @@ const MapViewScreen = (props: props) => {
         .then(responseJson => {
           if (responseJson.status === 'OK') {
             resolve(responseJson?.results?.[0]?.formatted_address);
-            console.log('responseJson==>', responseJson);
+            // console.log('responseJson==>', responseJson);
             const formatted_address =
               responseJson?.results?.[0]?.formatted_address;
             const sortAddress = formatted_address.split(' ').slice(1).join(' ');

@@ -5,7 +5,6 @@ import {
   SAVE_CURRENT_ADDRESS,
   SAVE_MODE,
   SAVE_MOBILE_NUMBER,
-  SAVE_SIGN_UP_USER_DETAILS,
   RESET,
 } from './type';
 
@@ -16,7 +15,6 @@ const initialState = {
   saveCurrentAddress: '',
   saveMode: '',
   saveMobileNumber: '',
-  saveSignupUserDetails: {},
 };
 
 const reducer = (state = initialState, action: any) => {
@@ -32,8 +30,6 @@ const reducer = (state = initialState, action: any) => {
     case SAVE_MODE:
       return {...state, ...action.payload};
     case SAVE_MOBILE_NUMBER:
-      return {...state, ...action.payload};
-    case SAVE_SIGN_UP_USER_DETAILS:
       return {...state, ...action.payload};
     case RESET:
       return {
