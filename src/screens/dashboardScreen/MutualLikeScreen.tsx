@@ -62,7 +62,7 @@ const MutualLikeScreen = (props: props) => {
         }}>
         <CustomButton
           onPress={() => {
-            props.navigation.navigate('AllMessageScreen');
+            // props.navigation.navigate('AllMessageScreen');
           }}
           txt={constants.string.sendMsg}
         />

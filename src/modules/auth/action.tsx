@@ -6,6 +6,8 @@ import {
   SAVE_MODE,
   SAVE_MOBILE_NUMBER,
   RESET,
+  SAVE_LOGIN_MOBILE,
+  SAVE_SINGLE_USER_SIGNUP_DETAILS
 } from './type';
 
 export const saveNewReference = (data: any) => {
@@ -35,6 +37,15 @@ export const saveSingleUserDetails = (data: any) => {
   };
 };
 
+export const saveSingleUserSignUpDetails = (data: any) => {
+  return (dispatch: any) => {
+    dispatch({
+      type: SAVE_SINGLE_USER_SIGNUP_DETAILS,
+      payload: {saveSingleUserSignUpDetails: data},
+    });
+  };
+};
+
 export const saveCurrentAddress = (data: any) => {
   return (dispatch: any) => {
     dispatch({
@@ -58,6 +69,15 @@ export const saveMobileNumber = (data: any) => {
     dispatch({
       type: SAVE_MOBILE_NUMBER,
       payload: {saveMobileNumber: data},
+    });
+  };
+};
+
+export const saveLoginMobileNumber = (data: any) => {
+  return (dispatch: any) => {
+    dispatch({
+      type: SAVE_LOGIN_MOBILE,
+      payload: {saveLoginMobileNumber: data},
     });
   };
 };

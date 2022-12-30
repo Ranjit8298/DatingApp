@@ -15,6 +15,7 @@ import 'react-native-get-random-values';
 import {v4 as uuidv4} from 'uuid';
 import {saveUserMessage} from '../../modules/dashboard';
 import {Bubble, GiftedChat, InputToolbar} from 'react-native-gifted-chat';
+import firestore from '@react-native-firebase/firestore';
 
 interface props {
   navigation: any;
@@ -22,50 +23,70 @@ interface props {
   saveUserMessage: any;
   saveUserMessageData: any;
   saveSingleUserDetails: any;
+  mode: any;
+  saveSingleUserSignUpDetails: any;
 }
 
 const SingleUserMessageScreen = (props: props) => {
   const [messages, setMessages] = useState<any[]>([]);
 
-  const userName = props.route.params?.userName;
-  const userImg = props.route.params?.userImg;
+  const userMessageName = props.route.params?.userMessageName;
+  const userMessageImg = props.route.params?.userMessageImg;
+  const userMessageId = props.route.params?.userMessageId;
+  const userMsgFileExt = props.route.params?.userMsgFileExt;
+
   const userNameMatch = props.route.params?.userNameMatch;
-  const userActiveStatus = props.route.params?.userActiveStatus;
+  const userImgMatch = props.route.params?.userImgMatch;
+  const userIdMatch = props.route.params?.userIdMatch;
+  const userMatchFileExt = props.route.params?.userMatchFileExt;
 
   const {userFirstName, userProfileImg, fileExt, userId} =
     props.saveSingleUserDetails;
+  const signupUserId = props.saveSingleUserSignUpDetails[0]?.userId;
+
+  const myUserId = props.mode === 'login' ? userId : signupUserId;
+  // console.log('senderUserId===>', `${userFirstName} === ${senderUserId}`);
 
   useEffect(() => {
-    // setMessages([
-    //   {
-    //     _id: 1,
-    //     text: 'Hello developer',
-    //     createdAt: new Date(),
-    //     user: {
-    //       _id: 2,
-    //       name: 'React Native',
-    //       avatar: 'https://placeimg.com/140/140/any',
-    //     },
+    // const messageData = {
+    //   _id: 1,
+    //   text: 'Hello Developer',
+    //   createdAt: new Date(),
+    //   user: {
+    //     _id: userMessageId ? userMessageId : userIdMatch,
+    //     name: userMessageName ? userMessageName : userNameMatch,
     //   },
-    // ]);
-    const messageData = {
-      _id: 1,
-      text: 'Hello developer',
-      createdAt: new Date(),
-      user: {
-        _id: 2,
-        name: userName,
-        avatar: userImg,
-      },
-    };
-
-    setMessages([messageData]);
+    // };
+    // setMessages([messageData]);
+    const querySnapShot = firestore()
+      .collection('chats')
+      .doc('123456789')
+      .collection('messages')
+      .orderBy('createdAt', 'desc');
+    querySnapShot.onSnapshot(snapShot => {
+      const allMessages = snapShot.docs.map(snap => {
+        return {...snap.data(), createdAt: new Date()};
+      });
+      setMessages(allMessages);
+    });
   }, []);
 
   const onSend = useCallback((messages = []) => {
-    setMessages(previousMessages =>
-      GiftedChat.append(previousMessages, messages),
-    );
+    const msg: any = messages[0];
+    const myMsg = {
+      ...msg,
+      senderId: myUserId,
+      receiverId: userMessageId ? userMessageId : userIdMatch,
+    };
+    setMessages(previousMessages => GiftedChat.append(previousMessages, myMsg));
+    firestore()
+      .collection('chats')
+      .doc('123456789')
+      .collection('messages')
+      .add({
+        ...myMsg,
+        createdAt: firestore.FieldValue.serverTimestamp(),
+      });
   }, []);
 
   return (
@@ -84,11 +105,9 @@ const SingleUserMessageScreen = (props: props) => {
 
         <View>
           <Text style={styles.headerTxt}>
-            {userName ? userName : userNameMatch}
+            {userMessageName ? userMessageName : userNameMatch}
           </Text>
-          <Text style={styles.lastSeenTxt}>
-            {userActiveStatus ? userActiveStatus : 'last seen 15m ago'}
-          </Text>
+          <Text style={styles.lastSeenTxt}>{'Online'}</Text>
         </View>
 
         <TouchableOpacity activeOpacity={0.8} onPress={() => {}}>
@@ -106,10 +125,11 @@ const SingleUserMessageScreen = (props: props) => {
       <GiftedChat
         messages={messages}
         isTyping={false}
-        textInputProps={{multiline: true,paddingTop:8}}
+        infiniteScroll={false}
+        textInputProps={{multiline: false, paddingTop: 8}}
         onSend={(messages: any) => onSend(messages)}
         user={{
-          _id: 1,
+          _id: myUserId,
         }}
         renderBubble={props => {
           return (
@@ -176,6 +196,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state: any) => ({
   saveUserMessageData: state.dashboard.saveUserMessage,
   saveSingleUserDetails: state.auth.saveSingleUserDetails,
+  mode: state.auth.saveMode,
+  saveSingleUserSignUpDetails: state.auth.saveSingleUserSignUpDetails,
 });
 
 const mapDispatchToProps = {

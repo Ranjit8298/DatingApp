@@ -16,14 +16,13 @@ import CommonFunction from '../../utils/CommonFunction';
 import {connect} from 'react-redux';
 import {
   saveSingleUserDetails,
-  saveUserDetails,
+  saveLoginMobileNumber,
   saveMode,
 } from '../../modules/auth';
 
 interface props {
   navigation: any;
-  saveUserDetails: any;
-  saveUserDetailsData: any;
+  saveLoginMobileNumber: any;
   saveSingleUserDetails: any;
   saveMode: any;
 }
@@ -47,7 +46,7 @@ const LoginScreen = (props: props) => {
       });
   };
 
-  console.log('allUserData==>', allUserData)
+  console.log('allUserData==>', allUserData);
 
   const validateLogin = () => {
     let mobReg = /^(\+\d{1,3}[- ]?)?\d{10}$/;
@@ -55,10 +54,7 @@ const LoginScreen = (props: props) => {
       CommonFunction.isToast('error', 'Please Enter Mobile Number');
     } else if (mobReg.test(email) === false) {
       CommonFunction.isToast('error', 'Please Enter Correct Mobile Number');
-    } else if (
-      CommonFunction.isNullUndefined(password) &&
-      password.length < 4
-    ) {
+    } else if (password.length < 4) {
       CommonFunction.isToast('error', 'Please enter 4 digit password');
     } else {
       allUserData.map((user: any) => {
@@ -69,6 +65,7 @@ const LoginScreen = (props: props) => {
           setPassword('');
           props.saveSingleUserDetails(user);
           props.saveMode('login');
+          props.saveLoginMobileNumber(email);
         }
       });
     }
@@ -224,13 +221,14 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state: any) => ({
-  saveUserDetailsData: state.auth.saveUserDetails,
+  // saveUserDetailsData: state.auth.saveUserDetails,
 });
 
 const mapDispatchToProps = {
-  saveUserDetails: (data: any) => saveUserDetails(data),
+  // saveUserDetails: (data: any) => saveUserDetails(data),
   saveSingleUserDetails: (data: any) => saveSingleUserDetails(data),
   saveMode: (data: any) => saveMode(data),
+  saveLoginMobileNumber: (data: any) => saveLoginMobileNumber(data),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);

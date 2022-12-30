@@ -19,6 +19,7 @@ interface props {
   messageTxt: any;
   isOnline: any;
   onPress: Function;
+  fileExt: any;
 }
 
 const CustomMessageBox = (props: props) => {
@@ -30,7 +31,12 @@ const CustomMessageBox = (props: props) => {
       activeOpacity={0.8}>
       <Text style={styles.messageTime}>{props.messageTime}</Text>
       <View style={styles.messageContainer}>
-        <Image style={styles.userImg} source={props.userImg} />
+        <Image
+          style={styles.userImg}
+          source={{
+            uri: `data:${props.fileExt};base64,${props.userImg}`,
+          }}
+        />
         <View
           style={{
             marginStart: constants.vh(10),

@@ -27,12 +27,15 @@ const Drawer = createDrawerNavigator();
 
 interface props {
   saveSingleUserDetails: any;
-  saveSignupUserDetails:any;
-  mode:any;
+  saveSingleUserSignUpDetails: any;
+  mode: any;
 }
 
 const DrawerNavigation = (props: props) => {
   const {userFirstName, userProfileImg, fileExt} = props.saveSingleUserDetails;
+  const userFirstNameSign = props.saveSingleUserSignUpDetails[0]?.userFirstName;
+  const userProfileImgSign = props.saveSingleUserSignUpDetails[0]?.userProfileImg;
+  const userfileExt = props.saveSingleUserSignUpDetails[0]?.fileExt;
   const CustomDrawerContent = (props: any) => {
     return (
       <SafeAreaView style={{flex: 1}}>
@@ -44,7 +47,11 @@ const DrawerNavigation = (props: props) => {
             }}>
             <Image
               style={styles.userImg}
-              source={{uri: `data:${fileExt};base64,${userProfileImg}`}}
+              source={{
+                uri: userProfileImg
+                  ? `data:${fileExt};base64,${userProfileImg}`
+                  : `data:${userfileExt};base64,${userProfileImgSign}`,
+              }}
             />
             <Text
               style={{
@@ -55,7 +62,7 @@ const DrawerNavigation = (props: props) => {
                 fontWeight: '400',
                 letterSpacing: 0.3,
               }}>
-              {userFirstName}
+              {userFirstName ? userFirstName : userFirstNameSign}
             </Text>
             <TouchableOpacity activeOpacity={0.8} onPress={() => {}}>
               <Text
@@ -272,7 +279,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state: any) => ({
   saveSingleUserDetails: state.auth.saveSingleUserDetails,
-  saveSignupUserDetails: state.auth.saveSignupUserDetails,
+  saveSingleUserSignUpDetails: state.auth.saveSingleUserSignUpDetails,
   mode: state.auth.saveMode,
 });
 

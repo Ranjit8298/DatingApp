@@ -6,15 +6,19 @@ import {
   SAVE_MODE,
   SAVE_MOBILE_NUMBER,
   RESET,
+  SAVE_LOGIN_MOBILE,
+  SAVE_SINGLE_USER_SIGNUP_DETAILS,
 } from './type';
 
 const initialState = {
   saveNewReference: '',
   saveUserDetails: [],
   saveSingleUserDetails: {},
+  saveSingleUserSignUpDetails: {},
   saveCurrentAddress: '',
   saveMode: '',
   saveMobileNumber: '',
+  saveLoginMobileNumber: '',
 };
 
 const reducer = (state = initialState, action: any) => {
@@ -30,6 +34,10 @@ const reducer = (state = initialState, action: any) => {
     case SAVE_MODE:
       return {...state, ...action.payload};
     case SAVE_MOBILE_NUMBER:
+      return {...state, ...action.payload};
+    case SAVE_LOGIN_MOBILE:
+      return {...state, ...action.payload};
+    case SAVE_SINGLE_USER_SIGNUP_DETAILS:
       return {...state, ...action.payload};
     case RESET:
       return {

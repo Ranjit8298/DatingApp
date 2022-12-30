@@ -12,10 +12,14 @@ import {
 import CustomHeader from '../../components/CustomHeader';
 import CustomSearchBox from '../../components/CustomSearchBox';
 import constants from '../../constants';
+import {connect} from 'react-redux';
 
 interface props {
   navigation: any;
   route: any;
+  mode: any;
+  filterLoginUserData: any;
+  filtersignupUserData: any;
 }
 
 const MatchesUserScreen = (props: props) => {
@@ -25,17 +29,29 @@ const MatchesUserScreen = (props: props) => {
 
   const liveUserCount = props.route.params?.userLiveCount;
 
+  console.log('props.mode==>', props.mode);
+  console.log('props.filterLoginUserData==>', props.filterLoginUserData);
+  console.log('props.filtersignupUserData==>', props.filtersignupUserData);
+
   useEffect(() => {
-    setFilteredDataSource(userData);
-    setMasterDataSource(userData);
+    setFilteredDataSource(
+      props.mode === 'login'
+        ? props.filterLoginUserData
+        : props.filtersignupUserData,
+    );
+    setMasterDataSource(
+      props.mode === 'login'
+        ? props.filterLoginUserData
+        : props.filtersignupUserData,
+    );
   }, []);
 
   const searchFilterFunction = (text: any) => {
     // Check if searched text is not blank
     if (text) {
       const newData = masterDataSource.filter(function (item) {
-        const itemData = item.userName
-          ? item.userName.toUpperCase()
+        const itemData = item.userFirstName
+          ? item.userFirstName.toUpperCase()
           : ''.toUpperCase();
         const textData = text.toUpperCase();
         return itemData.indexOf(textData) > -1;
@@ -77,7 +93,7 @@ const MatchesUserScreen = (props: props) => {
 
       <FlatList
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{alignSelf: 'center', justifyContent:'center'}}
+        // contentContainerStyle={{alignItems: 'center', justifyContent: 'center'}}
         data={filteredDataSource}
         numColumns={2}
         ListEmptyComponent={() => {
@@ -101,14 +117,20 @@ const MatchesUserScreen = (props: props) => {
             onPress={() => {
               {
                 props.navigation.navigate('SingleUserMessageScreen', {
-                  userNameMatch: item.userName,
-                  userImgMatch: item.userImg,
-                  userActiveStatus: item.userActiveStatus,
+                  userNameMatch: item.userFirstName,
+                  userImgMatch: item.userProfileImg,
+                  userIdMatch: item.userId,
+                  userMatchFileExt: item.fileExt,
                 });
               }
             }}>
             <View style={{flexDirection: 'row'}}>
-              <Image style={styles.locationImg} source={item.userImg} />
+              <Image
+                style={styles.locationImg}
+                source={{
+                  uri: `data:${item.fileExt};base64,${item.userProfileImg}`,
+                }}
+              />
               <TouchableOpacity activeOpacity={0.8} onPress={() => {}}>
                 <Image
                   style={{
@@ -121,14 +143,14 @@ const MatchesUserScreen = (props: props) => {
               </TouchableOpacity>
             </View>
 
-            <Text style={styles.locationName}>{item.userName}</Text>
+            <Text style={styles.locationName}>{item.userFirstName}</Text>
             <Text
               style={{
                 ...styles.locationName,
                 fontSize: constants.vw(14),
                 color: constants.colors.grey,
               }}>
-              {item.userActiveStatus}
+              {'Online'}
             </Text>
           </TouchableOpacity>
         )}
@@ -143,19 +165,19 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   locationImg: {
-    width: constants.vw(120),
-    height: constants.vh(120),
-    borderRadius: constants.vw(60),
-    resizeMode: 'cover',
+    width: constants.vw(128),
+    height: constants.vw(128),
+    borderRadius: constants.vw(64),
+    resizeMode: 'contain',
     borderWidth: 1,
     borderColor: constants.colors.inputborderColor,
   },
   itemView: {
-    padding: constants.vw(15),
+    padding: constants.vw(10),
     alignSelf: 'center',
     justifyContent: 'center',
-    width:'50%',
-    alignItems:'center'
+    width: '50%',
+    alignItems: 'center',
   },
   locationName: {
     fontSize: constants.vw(16.5),
@@ -178,73 +200,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const userData = [
-  {
-    userImg: constants.images.manOneImg,
-    userName: 'Ranjit Kumar',
-    userActiveStatus: 'Active 5 minutes Ago',
-    userId: 'L@1',
-  },
-  {
-    userImg: constants.images.manThreeImg,
-    userName: 'Chandan Kumar',
-    userActiveStatus: 'Active 15 minutes Ago',
-    userId: 'L@2',
-  },
-  {
-    userImg: constants.images.manThreeImg,
-    userName: 'Aanand Kumar',
-    userActiveStatus: 'Active 50 minutes Ago',
-    userId: 'L@3',
-  },
-  {
-    userImg: constants.images.manThreeImg,
-    userName: 'Sonu Kumar',
-    userActiveStatus: 'Active Today',
-    userId: 'L@4',
-  },
-  {
-    userImg: constants.images.manOneImg,
-    userName: 'Sagar Pawar',
-    userActiveStatus: 'Online',
-    userId: 'L@5',
-  },
-  {
-    userImg: constants.images.manThreeImg,
-    userName: 'Shivam Rawat',
-    userActiveStatus: 'Online',
-    userId: 'L@6',
-  },
-  {
-    userImg: constants.images.manOneImg,
-    userName: 'Suraj Adhaikari',
-    userActiveStatus: 'Active 5 minutes Ago',
-    userId: 'L@7',
-  },
-  {
-    userImg: constants.images.manOneImg,
-    userName: 'Bipin',
-    userActiveStatus: 'Active 55 minutes Ago',
-    userId: 'L@8',
-  },
-  {
-    userImg: constants.images.girlTwo,
-    userName: 'Mansi',
-    userActiveStatus: 'Online',
-    userId: 'L@9',
-  },
-  {
-    userImg: constants.images.girlOne,
-    userName: 'Simran',
-    userActiveStatus: 'Online',
-    userId: 'L@10',
-  },
-  {
-    userImg: constants.images.manThreeImg,
-    userName: 'Rohan',
-    userActiveStatus: 'Online',
-    userId: 'L@11',
-  },
-];
+const mapStateToProps = (state: any) => ({
+  mode: state.auth.saveMode,
+  filterLoginUserData: state.dashboard.filterLoginUserData,
+  filtersignupUserData: state.dashboard.filtersignupUserData,
+});
 
-export default MatchesUserScreen;
+const mapDispatchToProps = {};
+export default connect(mapStateToProps, mapDispatchToProps)(MatchesUserScreen);

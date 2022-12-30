@@ -13,7 +13,16 @@ import CustomSearchBox from '../../components/CustomSearchBox';
 import constants from '../../constants';
 import {connect} from 'react-redux';
 import {firebase} from '@react-native-firebase/database';
-import {saveUserDetails, saveSingleUserDetails} from '../../modules/auth';
+import {
+  saveUserDetails,
+  saveSingleUserDetails,
+  saveSingleUserSignUpDetails,
+} from '../../modules/auth';
+
+import {
+  filterLoginUserData,
+  filtersignupUserData,
+} from '../../modules/dashboard';
 
 interface props {
   navigation: any;
@@ -24,6 +33,12 @@ interface props {
   saveSingleUserDetails: any;
   saveUserDetails: any;
   saveUserDetailsData: any;
+  saveLoginMobileNumber: any;
+  saveSingleUserSignUpDetails: any;
+  saveSingleUserSignUpDetailsJson: any;
+  saveSingleUserDetailsJson: any;
+  filterLoginUserData: any;
+  filtersignupUserData: any;
 }
 
 const DashboardScreen = (props: props) => {
@@ -31,13 +46,28 @@ const DashboardScreen = (props: props) => {
   const [filteredDataSource, setFilteredDataSource] = useState<any[]>([]);
   const [masterDataSource, setMasterDataSource] = useState<any[]>([]);
   const [refreshing, setrefreshing] = useState(false);
+  const loginUserId = props.saveSingleUserDetailsJson?.userId;
+  const signupUserId = props.saveSingleUserSignUpDetailsJson[0]?.userId;
+
+  console.log('signupUserId==>', signupUserId);
+  console.log('loginUserId==>', loginUserId);
 
   useEffect(() => {
     getDataFromFirebase();
-    signUpUserDetails();
+    // signUpUserDetails();
+    let filterUser = props.saveUserDetailsData.filter(
+      (user: any) => user.userMobileNumber === props.mobileNumber,
+    );
+    props.saveSingleUserSignUpDetails(filterUser);
 
     setFilteredDataSource(userData);
     setMasterDataSource(userData);
+    {
+      props.mode === 'login' && filterLoginUserDetailData();
+    }
+    {
+      props.mode === 'signup' && filtersignupUserDetailData();
+    }
   }, []);
 
   const getDataFromFirebase = () => {
@@ -50,12 +80,19 @@ const DashboardScreen = (props: props) => {
       });
   };
 
-  const signUpUserDetails = () => {
-    props.saveUserDetailsData.map((user: any) => {
-      if (user.userMobileNumber === props.mobileNumber) {
-        props.saveSingleUserDetails(user);
-      }
-    });
+  // item.userId !== signupUserId,
+  const filterLoginUserDetailData = () => {
+    let fiterLoginUserData = props.saveUserDetailsData.filter(
+      (item: any) => item.userId !== loginUserId,
+    );
+    props.filterLoginUserData(fiterLoginUserData);
+  };
+
+  const filtersignupUserDetailData = () => {
+    let fitersignupUserData = props.saveUserDetailsData.filter(
+      (item: any) => item.userId !== signupUserId,
+    );
+    props.filtersignupUserData(fitersignupUserData);
   };
 
   const searchFilterFunction = (text: any) => {
@@ -78,6 +115,7 @@ const DashboardScreen = (props: props) => {
 
   const onRefresh = () => {
     setrefreshing(true);
+    // signUpUserDetails();
     setTimeout(() => {
       setrefreshing(false);
     }, 2000);
@@ -272,11 +310,17 @@ const mapStateToProps = (state: any) => ({
   mode: state.auth.saveMode,
   mobileNumber: state.auth.saveMobileNumber,
   saveUserDetailsData: state.auth.saveUserDetails,
+  saveLoginMobileNumber: state.auth.saveLoginMobileNumber,
+  saveSingleUserSignUpDetailsJson: state.auth.saveSingleUserSignUpDetails,
+  saveSingleUserDetailsJson: state.auth.saveSingleUserDetails,
 });
 
 const mapDispatchToProps = {
   saveSingleUserDetails: (data: any) => saveSingleUserDetails(data),
+  saveSingleUserSignUpDetails: (data: any) => saveSingleUserSignUpDetails(data),
   saveUserDetails: (data: any) => saveUserDetails(data),
+  filterLoginUserData: (data: any) => filterLoginUserData(data),
+  filtersignupUserData: (data: any) => filtersignupUserData(data),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardScreen);

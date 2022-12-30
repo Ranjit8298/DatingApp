@@ -13,10 +13,12 @@ import CustomHeader from '../../components/CustomHeader';
 import constants from '../../constants';
 import CustomSearchBox from '../../components/CustomSearchBox';
 import CustomMessageBox from '../../components/CustomMessageBox';
-import Swipeable from 'react-native-gesture-handler/Swipeable';
-
+import {connect} from 'react-redux';
 interface props {
   navigation: any;
+  mode: any;
+  filterLoginUserData: any;
+  filtersignupUserData: any;
 }
 
 const AllMessageScreen = (props: props) => {
@@ -25,16 +27,24 @@ const AllMessageScreen = (props: props) => {
   const [masterDataSource, setMasterDataSource] = useState<any[]>([]);
 
   useEffect(() => {
-    setFilteredDataSource(userData);
-    setMasterDataSource(userData);
+    setFilteredDataSource(
+      props.mode === 'login'
+        ? props.filterLoginUserData
+        : props.filtersignupUserData,
+    );
+    setMasterDataSource(
+      props.mode === 'login'
+        ? props.filterLoginUserData
+        : props.filtersignupUserData,
+    );
   }, []);
 
   const searchFilterFunction = (text: any) => {
     // Check if searched text is not blank
     if (text) {
       const newData = masterDataSource.filter(function (item) {
-        const itemData = item.messageTxt
-          ? item.messageTxt.toUpperCase()
+        const itemData = item.userFirstName
+          ? item.userFirstName.toUpperCase()
           : ''.toUpperCase();
         const textData = text.toUpperCase();
         return itemData.indexOf(textData) > -1;
@@ -101,7 +111,7 @@ const AllMessageScreen = (props: props) => {
 
       <CustomSearchBox
         value={message}
-        placeholder={'Search messages'}
+        placeholder={'Search by name'}
         onChangeText={(val: any) => {
           searchFilterFunction(val);
         }}
@@ -123,25 +133,28 @@ const AllMessageScreen = (props: props) => {
               <Text
                 style={
                   styles.noMsgTxt
-                }>{`You do not have any matches messages.`}</Text>
+                }>{`You do not have any matches user.`}</Text>
             </View>
           );
         }}
         renderItem={({item, index}) => (
-            <CustomMessageBox
-              messageTime={item.messageTime}
-              userImg={item.userImg}
-              userName={item.userName}
-              messageCount={item.messageCount}
-              messageTxt={item.messageTxt}
-              isOnline={item.isOnline}
-              onPress={() => {
-                props.navigation.navigate('SingleUserMessageScreen', {
-                  userName: item.userName,
-                  userImg: item.userImg,
-                });
-              }}
-            />
+          <CustomMessageBox
+            messageTime={'11:40 AM'}
+            userImg={item.userProfileImg}
+            userName={item.userFirstName}
+            messageCount={'05'}
+            messageTxt={'Where are you?'}
+            isOnline={true}
+            fileExt={item.fileExt}
+            onPress={() => {
+              props.navigation.navigate('SingleUserMessageScreen', {
+                userMessageName: item.userFirstName,
+                userMessageImg: item.userProfileImg,
+                userMessageId: item.userId,
+                userMsgFileExt: item.fileExt,
+              });
+            }}
+          />
         )}
       />
     </SafeAreaView>
@@ -257,4 +270,11 @@ const userData = [
   },
 ];
 
-export default AllMessageScreen;
+const mapStateToProps = (state: any) => ({
+  mode: state.auth.saveMode,
+  filterLoginUserData: state.dashboard.filterLoginUserData,
+  filtersignupUserData: state.dashboard.filtersignupUserData,
+});
+
+const mapDispatchToProps = {};
+export default connect(mapStateToProps, mapDispatchToProps)(AllMessageScreen);
