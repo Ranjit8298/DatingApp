@@ -17,10 +17,12 @@ import Router from '../../navigator/Router';
 import {connect} from 'react-redux';
 import {Logout} from '../../modules/auth';
 import CommonFunction from '../../utils/CommonFunction';
+import {resetDashboard} from '../../modules/dashboard';
 
 interface props {
   navigation: any;
   Logout: any;
+  resetDashboard: any;
 }
 const SettingsScreen = (props: props) => {
   const [isEnabled, setIsEnabled] = React.useState(false);
@@ -129,12 +131,7 @@ const SettingsScreen = (props: props) => {
         activeOpacity={0.8}
         style={styles.signOutView}
         onPress={() => {
-          // props.Logout(() => {
-          //   Router.resetNew(props.navigation, 'RootNavigator', {});
-          // });
-          props.Logout();
-          CommonFunction.isToast('success', 'Logout Successfully');
-          props.navigation.navigate('CheckedInScreen');
+          props.navigation.navigate('LogoutModal');
         }}>
         <Image
           style={{tintColor: constants.colors.colorPrimary}}
@@ -220,6 +217,7 @@ const mapStateToProps = (state: any) => ({});
 
 const mapDispatchToProps = {
   Logout: () => Logout(),
+  resetDashboard: () => resetDashboard(),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SettingsScreen);

@@ -30,7 +30,7 @@ const OtpScreen = (props: props) => {
   const [input5, setinput5] = useState('');
   const [input6, setinput6] = useState('');
 
-  const [confirm, setConfirm] = useState(null);
+  const [confirm, setConfirm] = useState<any | null>(null);
 
   const mobile = props.route.params?.mobile;
 

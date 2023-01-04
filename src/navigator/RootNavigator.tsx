@@ -15,6 +15,7 @@ import DrawerNavigation from './DrawerNavigation';
 import MapViewScreen from '../screens/onboardingScreen/MapViewScreen';
 import MutualLikeScreen from '../screens/dashboardScreen/MutualLikeScreen';
 import FilterModal from '../screens/dashboardScreen/FilterModal';
+import LogoutModal from '../screens/dashboardScreen/LogoutModal';
 import SingleUserMessageScreen from '../screens/dashboardScreen/SingleUserMessageScreen';
 
 import {navigationRef} from './RootNavigation';
@@ -75,7 +76,7 @@ const modalLayout = {
   title: '',
   ...TransitionPresets.ModalSlideFromBottomIOS,
   cardStyle: {
-    backgroundColor: 'rgba(0,0,0,0.3)',
+    backgroundColor: 'rgba(0,0,0,0.7)',
     opacity: 1,
   },
 };
@@ -114,6 +115,11 @@ const RootNavigators = () => {
           <Stack.Screen
             name="FilterModal"
             component={FilterModal}
+            options={modalLayout}
+          />
+          <Stack.Screen
+            name="LogoutModal"
+            component={LogoutModal}
             options={modalLayout}
           />
         </RootStack.Group>

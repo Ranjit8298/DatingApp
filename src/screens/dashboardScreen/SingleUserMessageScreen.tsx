@@ -71,23 +71,24 @@ const SingleUserMessageScreen = (props: props) => {
     });
   }, []);
 
-  const onSend = useCallback((messages = []) => {
+  const onSend = (messages: any) => {
     const msg: any = messages[0];
+    const receiverUerId = userMessageId ? userMessageId : userIdMatch;
     const myMsg = {
       ...msg,
       senderId: myUserId,
-      receiverId: userMessageId ? userMessageId : userIdMatch,
+      receiverId: receiverUerId,
     };
     setMessages(previousMessages => GiftedChat.append(previousMessages, myMsg));
     firestore()
-      .collection('chats')
-      .doc('123456789')
+      .collection('chats_room')
+      .doc(myUserId + '+' + receiverUerId)
       .collection('messages')
       .add({
         ...myMsg,
         createdAt: firestore.FieldValue.serverTimestamp(),
       });
-  }, []);
+  };
 
   return (
     <SafeAreaView style={styles.conatainer}>

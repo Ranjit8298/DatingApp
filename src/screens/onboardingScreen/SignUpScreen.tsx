@@ -14,7 +14,7 @@ import CustomBackButton from '../../components/CustomBackButton';
 import 'react-native-get-random-values';
 import {v4 as uuidv4} from 'uuid';
 import CommonFunction from '../../utils/CommonFunction';
-import database from '@react-native-firebase/database';
+import database, {firebase} from '@react-native-firebase/database';
 import {connect} from 'react-redux';
 import {saveNewReference, saveMode, saveMobileNumber} from '../../modules/auth';
 
@@ -27,6 +27,11 @@ interface props {
 
 const SignUpScreen = (props: props) => {
   const [mobile, setMobile] = useState('');
+  const [allUserData, saveAllUserData] = useState<any[]>([]);
+
+  React.useEffect(() => {
+    getDataFromFirebase();
+  }, []);
 
   const saveSignUpData = () => {
     let randomNumber = Math.floor(100000 + Math.random() * 900000);
@@ -44,6 +49,16 @@ const SignUpScreen = (props: props) => {
       );
   };
 
+  const getDataFromFirebase = () => {
+    firebase
+      .database()
+      .ref()
+      .on('value', snapshot => {
+        let responselist = snapshot.val();
+        saveAllUserData(Object.values(responselist));
+      });
+  };
+
   const validateSignUp = () => {
     let reg = /^(\+\d{1,3}[- ]?)?\d{10}$/;
     if (CommonFunction.isNullUndefined(mobile)) {
@@ -56,6 +71,17 @@ const SignUpScreen = (props: props) => {
       saveSignUpData();
       props.saveMode('signup');
       props.saveMobileNumber(mobile);
+      // allUserData.map((user: any) => {
+      //   if (user.userMobileNumber !== mobile) {
+      //     props.navigation.navigate('OtpScreen', {mobile: mobile});
+      //     setMobile('');
+      //     saveSignUpData();
+      //     props.saveMode('signup');
+      //     props.saveMobileNumber(mobile);
+      //   } else {
+      //     CommonFunction.isToast('error', 'You are already register with us.');
+      //   }
+      // });
     }
   };
 

@@ -26,12 +26,9 @@ const MatchesUserScreen = (props: props) => {
   const [location, setLoaction] = useState('');
   const [filteredDataSource, setFilteredDataSource] = useState<any[]>([]);
   const [masterDataSource, setMasterDataSource] = useState<any[]>([]);
+  const [refreshing, setrefreshing] = useState(false);
 
   const liveUserCount = props.route.params?.userLiveCount;
-
-  console.log('props.mode==>', props.mode);
-  console.log('props.filterLoginUserData==>', props.filterLoginUserData);
-  console.log('props.filtersignupUserData==>', props.filtersignupUserData);
 
   useEffect(() => {
     setFilteredDataSource(
@@ -64,6 +61,22 @@ const MatchesUserScreen = (props: props) => {
     }
   };
 
+  const onRefresh = () => {
+    setrefreshing(true);
+    setFilteredDataSource(
+      props.mode === 'login'
+        ? props.filterLoginUserData
+        : props.filtersignupUserData,
+    );
+    setMasterDataSource(
+      props.mode === 'login'
+        ? props.filterLoginUserData
+        : props.filtersignupUserData,
+    );
+    setTimeout(() => {
+      setrefreshing(false);
+    }, 2000);
+  };
   return (
     <SafeAreaView style={styles.container}>
       <CustomHeader
@@ -94,6 +107,8 @@ const MatchesUserScreen = (props: props) => {
       <FlatList
         showsVerticalScrollIndicator={false}
         // contentContainerStyle={{alignItems: 'center', justifyContent: 'center'}}
+        refreshing={refreshing}
+        onRefresh={onRefresh}
         data={filteredDataSource}
         numColumns={2}
         ListEmptyComponent={() => {
@@ -168,7 +183,7 @@ const styles = StyleSheet.create({
     width: constants.vw(128),
     height: constants.vw(128),
     borderRadius: constants.vw(64),
-    resizeMode: 'contain',
+    resizeMode: 'cover',
     borderWidth: 1,
     borderColor: constants.colors.inputborderColor,
   },

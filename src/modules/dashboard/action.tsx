@@ -2,6 +2,7 @@ import {
   SAVE_USER_MESSAGE,
   FILTER_LOGIN_USER_DATA,
   FILTER_SIGNUP_USER_DATA,
+  RESET_DASHBOARD
 } from './type';
 
 export const saveUserMessage = (data: any) => {
@@ -31,3 +32,12 @@ export const filtersignupUserData = (data: any) => {
     });
   };
 };
+
+export const resetDashboard = () => {
+  return (dispatch: any) => {
+    dispatch({
+      type: RESET_DASHBOARD,
+    });
+    // success();
+  };
+}

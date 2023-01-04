@@ -25,7 +25,7 @@ interface props {
 }
 
 const BasicInformationScreen = (props: props) => {
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(new Date("2004-01-01"));
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [male, setMale] = useState(false);
@@ -145,7 +145,7 @@ const BasicInformationScreen = (props: props) => {
             mode="date"
             androidVariant="nativeAndroid"
             textColor="#fff"
-            // maximumDate={new Date(getMaxFormetedDate)}
+            maximumDate={new Date("2004-01-01")}
           />
           <Text style={styles.txtInputHeader}>{constants.string.gender}</Text>
           <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>

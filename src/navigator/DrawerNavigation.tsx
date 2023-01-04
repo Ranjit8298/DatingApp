@@ -32,10 +32,15 @@ interface props {
 }
 
 const DrawerNavigation = (props: props) => {
-  const {userFirstName, userProfileImg, fileExt} = props.saveSingleUserDetails;
+  const userFirstName = props.saveSingleUserDetails?.userFirstName;
+  const userProfileImg = props.saveSingleUserDetails?.userProfileImg;
+  const fileExt = props.saveSingleUserDetails?.fileExt;
+
   const userFirstNameSign = props.saveSingleUserSignUpDetails[0]?.userFirstName;
-  const userProfileImgSign = props.saveSingleUserSignUpDetails[0]?.userProfileImg;
+  const userProfileImgSign =
+    props.saveSingleUserSignUpDetails[0]?.userProfileImg;
   const userfileExt = props.saveSingleUserSignUpDetails[0]?.fileExt;
+
   const CustomDrawerContent = (props: any) => {
     return (
       <SafeAreaView style={{flex: 1}}>
@@ -48,9 +53,9 @@ const DrawerNavigation = (props: props) => {
             <Image
               style={styles.userImg}
               source={{
-                uri: userProfileImg
-                  ? `data:${fileExt};base64,${userProfileImg}`
-                  : `data:${userfileExt};base64,${userProfileImgSign}`,
+                uri: userProfileImgSign
+                  ? `data:${userfileExt};base64,${userProfileImgSign}`
+                  : `data:${fileExt};base64,${userProfileImg}`,
               }}
             />
             <Text
@@ -62,7 +67,7 @@ const DrawerNavigation = (props: props) => {
                 fontWeight: '400',
                 letterSpacing: 0.3,
               }}>
-              {userFirstName ? userFirstName : userFirstNameSign}
+              {userFirstNameSign ? userFirstNameSign : userFirstName}
             </Text>
             <TouchableOpacity activeOpacity={0.8} onPress={() => {}}>
               <Text

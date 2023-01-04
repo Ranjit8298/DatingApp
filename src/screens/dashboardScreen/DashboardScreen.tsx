@@ -13,6 +13,8 @@ import CustomSearchBox from '../../components/CustomSearchBox';
 import constants from '../../constants';
 import {connect} from 'react-redux';
 import {firebase} from '@react-native-firebase/database';
+import cloneDeep from 'lodash.clonedeep';
+import obj from 'lodash';
 import {
   saveUserDetails,
   saveSingleUserDetails,
@@ -49,19 +51,11 @@ const DashboardScreen = (props: props) => {
   const loginUserId = props.saveSingleUserDetailsJson?.userId;
   const signupUserId = props.saveSingleUserSignUpDetailsJson[0]?.userId;
 
-  console.log('signupUserId==>', signupUserId);
-  console.log('loginUserId==>', loginUserId);
-
   useEffect(() => {
     getDataFromFirebase();
-    // signUpUserDetails();
-    let filterUser = props.saveUserDetailsData.filter(
-      (user: any) => user.userMobileNumber === props.mobileNumber,
-    );
-    props.saveSingleUserSignUpDetails(filterUser);
-
     setFilteredDataSource(userData);
     setMasterDataSource(userData);
+    filterSingleSignupUserData();
     {
       props.mode === 'login' && filterLoginUserDetailData();
     }
@@ -80,7 +74,14 @@ const DashboardScreen = (props: props) => {
       });
   };
 
-  // item.userId !== signupUserId,
+  const filterSingleSignupUserData = () => {
+    let filterUser = props.saveUserDetailsData.filter(
+      (user: any) => user.userMobileNumber === props.mobileNumber,
+    );
+    props.saveSingleUserSignUpDetails(filterUser);
+    console.log(filterUser);
+  };
+
   const filterLoginUserDetailData = () => {
     let fiterLoginUserData = props.saveUserDetailsData.filter(
       (item: any) => item.userId !== loginUserId,
@@ -90,7 +91,7 @@ const DashboardScreen = (props: props) => {
 
   const filtersignupUserDetailData = () => {
     let fitersignupUserData = props.saveUserDetailsData.filter(
-      (item: any) => item.userId !== signupUserId,
+      (item: any) => item.userMobileNumber !== props.mobileNumber,
     );
     props.filtersignupUserData(fitersignupUserData);
   };
@@ -115,7 +116,12 @@ const DashboardScreen = (props: props) => {
 
   const onRefresh = () => {
     setrefreshing(true);
-    // signUpUserDetails();
+    {
+      props.mode === 'login' && filterLoginUserDetailData();
+    }
+    {
+      props.mode === 'signup' && filtersignupUserDetailData();
+    }
     setTimeout(() => {
       setrefreshing(false);
     }, 2000);

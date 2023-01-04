@@ -31,7 +31,7 @@ const ProfileImageChooseScreen = (props: props) => {
       .ref(props.saveNewReference)
       .update({
         userProfileImg: image.data,
-        fileExt:image.mime,
+        fileExt: image.mime,
       })
       .then(
         () =>
@@ -98,16 +98,14 @@ const ProfileImageChooseScreen = (props: props) => {
       />
       <View style={{...styles.imgCircleView}}>
         <View style={styles.circleImageView}>
-          {/* {image.data === '' ?
-                        <Image style={styles.imgView}
-                            source={constants.images.maleImg} />
-
-                        :  */}
-          <Image
-            style={styles.imgView}
-            source={{uri: `data:${image.mime};base64,${image.data}`}}
-          />
-          {/* } */}
+          {CommonFunction.isNullUndefined(image.data) ? (
+            <Image style={styles.imgView} source={constants.images.maleImg} />
+          ) : (
+            <Image
+              style={styles.imgView}
+              source={{uri: `data:${image.mime};base64,${image.data}`}}
+            />
+          )}
         </View>
       </View>
       <View style={styles.imgPickerView}>
