@@ -8,6 +8,7 @@ import {
   Switch,
   Image,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import CustomButton from '../../components/CustomButton';
 import CustomHeader from '../../components/CustomHeader';
@@ -43,102 +44,104 @@ const SettingsScreen = (props: props) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <CustomHeader
-        headerTxt={constants.string.settings}
-        messageCount={'30'}
-        onMenuPress={() => {
-          props.navigation.openDrawer();
-        }}
-        onMessagePress={() => {}}
-        showRound={true}
-        leftImg={constants.images.messageImg}
-        rightImg={constants.images.menuImg}
-      />
-      <ImageBackground
-        style={styles.topChatImg}
-        source={constants.images.chatBgImg}>
-        <View style={styles.topChatImgView}>
-          <Text style={styles.topHeader}>{'You’re on our free plan'}</Text>
-          <Text
-            style={{
-              ...styles.topHeader,
-              fontSize: constants.vw(16),
-              fontWeight: '400',
-              marginTop: constants.vh(0),
-            }}>
-            {'You want to make the most out of Hooked?'}
-          </Text>
-          <CustomButton
-            onPress={() => {}}
-            txt={'Upgrade to PRO'}
-            btnStyle={styles.btnStyle}
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <CustomHeader
+          headerTxt={constants.string.settings}
+          messageCount={'30'}
+          onMenuPress={() => {
+            props.navigation.openDrawer();
+          }}
+          onMessagePress={() => {}}
+          showRound={true}
+          leftImg={constants.images.messageImg}
+          rightImg={constants.images.menuImg}
+        />
+        <ImageBackground
+          style={styles.topChatImg}
+          source={constants.images.chatBgImg}>
+          <View style={styles.topChatImgView}>
+            <Text style={styles.topHeader}>{'You’re on our free plan'}</Text>
+            <Text
+              style={{
+                ...styles.topHeader,
+                fontSize: constants.vw(16),
+                fontWeight: '400',
+                marginTop: constants.vh(0),
+              }}>
+              {'You want to make the most out of Hooked?'}
+            </Text>
+            <CustomButton
+              onPress={() => {}}
+              txt={'Upgrade to PRO'}
+              btnStyle={styles.btnStyle}
+            />
+          </View>
+        </ImageBackground>
+        <Text style={styles.seactionHeader}>{'GENERAL'}</Text>
+        <CustomSeprator />
+        <View>{renderSettingsItem('My current location', 'India')}</View>
+        <CustomSeprator sepratorStyle={{marginStart: constants.vw(15)}} />
+        <View>{renderSettingsItem('Search radius', '50km')}</View>
+        <CustomSeprator sepratorStyle={{marginStart: constants.vw(15)}} />
+        <View>{renderSettingsItem('Gender preference', 'Male')}</View>
+        <CustomSeprator />
+
+        <Text style={styles.seactionHeader}>{'PRIVACY'}</Text>
+        <CustomSeprator />
+
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            padding: constants.vw(15),
+          }}>
+          <Text style={styles.headingStyle}>{'Push notifications'}</Text>
+          <Switch
+            trackColor={{false: '#767577', true: '#81b0ff'}}
+            thumbColor={
+              isEnabled ? constants.colors.colorPrimary : constants.colors.navy
+            }
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={toggleSwitch}
+            value={isEnabled}
           />
         </View>
-      </ImageBackground>
-      <Text style={styles.seactionHeader}>{'GENERAL'}</Text>
-      <CustomSeprator />
-      <View>{renderSettingsItem('My current location', 'India')}</View>
-      <CustomSeprator sepratorStyle={{marginStart: constants.vw(15)}} />
-      <View>{renderSettingsItem('Search radius', '50km')}</View>
-      <CustomSeprator sepratorStyle={{marginStart: constants.vw(15)}} />
-      <View>{renderSettingsItem('Gender preference', 'Male')}</View>
-      <CustomSeprator />
+        <CustomSeprator sepratorStyle={{marginStart: constants.vw(15)}} />
 
-      <Text style={styles.seactionHeader}>{'PRIVACY'}</Text>
-      <CustomSeprator />
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            padding: constants.vw(15),
+          }}>
+          <Text style={styles.headingStyle}>{'Incognito browsing'}</Text>
+          <Switch
+            trackColor={{false: '#767577', true: '#81b0ff'}}
+            thumbColor={
+              isEnabledIncognito
+                ? constants.colors.colorPrimary
+                : constants.colors.navy
+            }
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={toggleSwitchIncognito}
+            value={isEnabledIncognito}
+          />
+        </View>
+        <CustomSeprator sepratorStyle={{marginStart: constants.vw(15)}} />
 
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          padding: constants.vw(15),
-        }}>
-        <Text style={styles.headingStyle}>{'Push notifications'}</Text>
-        <Switch
-          trackColor={{false: '#767577', true: '#81b0ff'}}
-          thumbColor={
-            isEnabled ? constants.colors.colorPrimary : constants.colors.navy
-          }
-          ios_backgroundColor="#3e3e3e"
-          onValueChange={toggleSwitch}
-          value={isEnabled}
-        />
-      </View>
-      <CustomSeprator sepratorStyle={{marginStart: constants.vw(15)}} />
-
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          padding: constants.vw(15),
-        }}>
-        <Text style={styles.headingStyle}>{'Incognito browsing'}</Text>
-        <Switch
-          trackColor={{false: '#767577', true: '#81b0ff'}}
-          thumbColor={
-            isEnabledIncognito
-              ? constants.colors.colorPrimary
-              : constants.colors.navy
-          }
-          ios_backgroundColor="#3e3e3e"
-          onValueChange={toggleSwitchIncognito}
-          value={isEnabledIncognito}
-        />
-      </View>
-      <CustomSeprator sepratorStyle={{marginStart: constants.vw(15)}} />
-
-      <TouchableOpacity
-        activeOpacity={0.8}
-        style={styles.signOutView}
-        onPress={() => {
-          props.navigation.navigate('LogoutModal');
-        }}>
-        <Image
-          style={{tintColor: constants.colors.colorPrimary}}
-          source={constants.images.logoutImg}
-        />
-        <Text style={styles.signOutTxt}>{'LOGOUT'}</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={styles.signOutView}
+          onPress={() => {
+            props.navigation.navigate('LogoutModal');
+          }}>
+          <Image
+            style={{tintColor: constants.colors.colorPrimary}}
+            source={constants.images.logoutImg}
+          />
+          <Text style={styles.signOutTxt}>{'LOGOUT'}</Text>
+        </TouchableOpacity>
+      </ScrollView>
     </SafeAreaView>
   );
 };

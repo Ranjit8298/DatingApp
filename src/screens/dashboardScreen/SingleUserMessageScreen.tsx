@@ -47,12 +47,16 @@ const SingleUserMessageScreen = (props: props) => {
   const myUserId = props.mode === 'login' ? userId : signupUserId;
   const receiverUerId = userMessageId ? userMessageId : userIdMatch;
 
-  console.log('messages==>', messages);
-
+  console.log('messages===>',messages);
   const getAllMessages = async () => {
+    const chatid =
+      receiverUerId > myUserId
+        ? myUserId + '-' + receiverUerId
+        : receiverUerId + '-' + myUserId;
+
     const msgResponse = await firestore()
       .collection('chats_room')
-      .doc(myUserId + '+' + receiverUerId)
+      .doc(chatid)
       .collection('messages')
       .orderBy('createdAt', 'desc')
       .get();
@@ -68,23 +72,27 @@ const SingleUserMessageScreen = (props: props) => {
     getAllMessages();
   }, []);
 
-  const onSend = useCallback((messages: any) => {
-    const msg: any = messages[0];
-    const myMsg = {
+  const onSend = (msgArray: any) => {
+    const msg = msgArray[0];
+    const usermsg = {
       ...msg,
-      senderId: myUserId,
-      receiverId: receiverUerId,
+      sentBy: myUserId,
+      sentTo: receiverUerId,
+      createdAt: new Date(),
     };
-    setMessages(previousMessages => GiftedChat.append(previousMessages, myMsg));
+    setMessages(previousMessages =>
+      GiftedChat.append(previousMessages, usermsg),
+    );
+    const chatid =
+      receiverUerId > myUserId
+        ? myUserId + '-' + receiverUerId
+        : receiverUerId + '-' + myUserId;
     firestore()
       .collection('chats_room')
-      .doc(myUserId + '+' + receiverUerId)
+      .doc(chatid)
       .collection('messages')
-      .add({
-        ...myMsg,
-        createdAt: firestore.FieldValue.serverTimestamp(),
-      });
-  }, []);
+      .add({...usermsg, createdAt: firestore.FieldValue.serverTimestamp()});
+  };
 
   return (
     <SafeAreaView style={styles.conatainer}>

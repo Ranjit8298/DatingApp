@@ -25,7 +25,7 @@ interface props {
 }
 
 const BasicInformationScreen = (props: props) => {
-  const [date, setDate] = useState(new Date("2004-01-01"));
+  const [date, setDate] = useState(new Date('2004-01-01'));
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [male, setMale] = useState(false);
@@ -35,22 +35,12 @@ const BasicInformationScreen = (props: props) => {
 
   const currentDate = new Date(date).toISOString();
   const getFormetedDate = moment(currentDate).utc().format('YYYY-MM-DD');
-  console.log('getFormetedDate===>', getFormetedDate);
-  // maximumDate={new Date(year - 18, month, day)}
-  const getYear = new Date(getFormetedDate).getFullYear();
-  const getMonth = new Date(getFormetedDate).getMonth();
-  const getDay = new Date(getFormetedDate).getDay();
-  const getDate = new Date(getFormetedDate).getDate();
+ 
+  const getOldYear = new Date(getFormetedDate).getFullYear();
 
-  const getMaxDate = new Date(getYear - 18, getMonth, getDay);
-  const getMaxFormetedDate = moment(getMaxDate).utc().format('YYYY-MM-DD');
-  // console.log('getMaxDate===>', getMaxDate);
-  // console.log('getMaxFormetedDate===>', getMaxFormetedDate);
-  // console.log('getYear==>', getYear);
-  // console.log('getMonth==>', getMonth);
-  // console.log('getday==>', getDay);
-  // console.log('getDate==>', getDate);
-
+  const getCurrentYear = new Date().getFullYear();
+  const getUserAge: any = getCurrentYear - getOldYear;
+  
   const saveBasicInfoData = () => {
     database()
       .ref(props.saveNewReference)
@@ -59,6 +49,7 @@ const BasicInformationScreen = (props: props) => {
         userBirthday: getFormetedDate,
         userGender: male === true ? 'male' : 'female',
         userEmail: email,
+        userAge: getUserAge ? getUserAge : '19',
       })
       .then(() =>
         CommonFunction.isToast('success', 'Your Basic Info Saved Successfully'),
@@ -145,7 +136,7 @@ const BasicInformationScreen = (props: props) => {
             mode="date"
             androidVariant="nativeAndroid"
             textColor="#fff"
-            maximumDate={new Date("2004-01-01")}
+            maximumDate={new Date('2004-01-01')}
           />
           <Text style={styles.txtInputHeader}>{constants.string.gender}</Text>
           <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
