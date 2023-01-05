@@ -12,7 +12,7 @@ const CheckedInScreen = (props: props) => {
     <ImageBackground
       source={require('../../assets/images/dating_bg.jpg')}
       style={styles.container}
-      resizeMode="cover">
+      resizeMode='cover'>
       <Text style={styles.checkedInTxt}>{constants.string.checkedIn}</Text>
       <Text
         style={{
@@ -48,21 +48,21 @@ const styles = StyleSheet.create({
   },
   checkedInTxt: {
     fontSize: constants.vw(25),
-    color: '#850E35',
+    color: constants.colors.navy,
     alignSelf: 'center',
     fontWeight: 'bold',
-    marginTop: constants.vh(70),
+    marginTop: constants.vh(10),
   },
   btnStyle: {
     alignSelf: 'center',
     position: 'absolute',
     bottom: constants.vh(150),
-    backgroundColor: constants.colors.secondary,
+    backgroundColor: constants.colors.navy,
   },
   btnStyleLogin: {
     alignSelf: 'center',
     position: 'absolute',
-    bottom: constants.vh(70),
+    bottom: constants.vh(80),
     backgroundColor: constants.colors.colorPrimary,
   },
 });

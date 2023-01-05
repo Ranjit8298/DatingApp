@@ -12,9 +12,13 @@ import {
 import CustomHeader from '../../components/CustomHeader';
 import constants from '../../constants';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
+import {connect} from 'react-redux';
 
 interface props {
   navigation: any;
+  mode: any;
+  filterLoginUserData: any;
+  filtersignupUserData: any;
 }
 
 export const SLIDER_WIDTH = Dimensions.get('window').width + 9;
@@ -24,30 +28,92 @@ const BrowseScreen = (props: props) => {
   const [index, setIndex] = useState(0);
   const [like, setLike] = useState(false);
   const [nope, setNope] = useState(false);
+  const [superLike, setSuperLike] = useState(false);
+  const [isOnline, setisOnline] = useState(true);
   const ref = React.useRef();
 
   const likeAction = () => {
     if (like === false) {
       setLike(true);
+      setTimeout(() => {
+        setLike(false);
+      }, 500);
     }
   };
 
   const nopeAction = () => {
     if (nope === false) {
       setNope(true);
+      setTimeout(() => {
+        setNope(false);
+      }, 500);
+    }
+  };
+
+  const superLikeAction = () => {
+    if (superLike === false) {
+      setSuperLike(true);
+      setTimeout(() => {
+        setSuperLike(false);
+      }, 500);
     }
   };
 
   const renderItem = ({item}: any) => {
     return (
       <ImageBackground
-        source={item.userImg}
-        resizeMode="cover"
+        source={{
+          uri: `data:${item.fileExt};base64,${item.userProfileImg}`,
+        }}
         style={styles.image}
         imageStyle={{borderRadius: constants.vw(15)}}>
+        {superLike === true && (
+          <View style={styles.superLikeView}>
+            <Text
+              style={{
+                ...styles.likeDislikeTxt,
+                color: constants.colors.dark_blue,
+              }}>
+              {'Super Like'}
+            </Text>
+          </View>
+        )}
+
+        {like === true && (
+          <View
+            style={{
+              ...styles.likeDislikeTxtView,
+              borderColor: constants.colors.colorPrimary,
+            }}>
+            <Text
+              style={{
+                ...styles.likeDislikeTxt,
+                color: constants.colors.colorPrimary,
+              }}>
+              {'Like'}
+            </Text>
+          </View>
+        )}
+
+        {nope === true && (
+          <View
+            style={{
+              ...styles.likeDislikeTxtView,
+              borderColor: constants.colors.gray,
+            }}>
+            <Text
+              style={{
+                ...styles.likeDislikeTxt,
+                color: constants.colors.gray,
+              }}>
+              {'Nope'}
+            </Text>
+          </View>
+        )}
+
         <View style={styles.bottomView}>
           <Text style={styles.userName}>
-            {item.userName}{' '}
+            {item.userFirstName}{' '}
             <Text
               style={{
                 ...styles.userName,
@@ -58,7 +124,7 @@ const BrowseScreen = (props: props) => {
             </Text>
           </Text>
 
-          {item.isOnline && (
+          {isOnline && (
             <View style={styles.subTxtView}>
               <View style={styles.onlineView} />
               <Text
@@ -81,7 +147,7 @@ const BrowseScreen = (props: props) => {
                 color: constants.colors.white,
                 marginStart: constants.vh(3),
               }}>
-              {item.userDistance}
+              {'05 km away'}
             </Text>
           </View>
 
@@ -95,7 +161,7 @@ const BrowseScreen = (props: props) => {
                 color: constants.colors.white,
                 marginStart: constants.vh(4),
               }}>
-              {item.userLocation}
+              {'Lives in Dehradun'}
             </Text>
           </View>
 
@@ -103,7 +169,10 @@ const BrowseScreen = (props: props) => {
             <TouchableOpacity
               style={styles.roundView}
               onPress={() => {
-                ref.current?.snapToNext?.();
+                setTimeout(() => {
+                  ref.current?.snapToNext?.();
+                }, 500);
+                nopeAction();
               }}
               activeOpacity={0.3}>
               <Image
@@ -114,7 +183,10 @@ const BrowseScreen = (props: props) => {
 
             <TouchableOpacity
               onPress={() => {
-                ref.current?.snapToNext?.();
+                setTimeout(() => {
+                  ref.current?.snapToNext?.();
+                }, 500);
+                likeAction();
               }}
               activeOpacity={0.3}
               style={{
@@ -139,7 +211,10 @@ const BrowseScreen = (props: props) => {
 
             <TouchableOpacity
               onPress={() => {
-                ref.current?.snapToNext?.();
+                setTimeout(() => {
+                  ref.current?.snapToNext?.();
+                }, 500);
+                superLikeAction();
               }}
               activeOpacity={0.3}
               style={{
@@ -182,9 +257,14 @@ const BrowseScreen = (props: props) => {
         <Carousel
           ref={ref}
           layout={'default'}
+          scrollEnabled={false}
           showsVerticalScrollIndicator={false}
           loop={true}
-          data={userData}
+          data={
+            props.mode === 'login'
+              ? props.filterLoginUserData
+              : props.filtersignupUserData
+          }
           renderItem={renderItem}
           sliderWidth={SLIDER_WIDTH}
           itemWidth={ITEM_WIDTH}
@@ -203,7 +283,6 @@ const styles = StyleSheet.create({
   image: {
     justifyContent: 'center',
     height: constants.vh(700),
-    backgroundColor: constants.colors.black,
   },
   bottomView: {
     width: '100%',
@@ -251,6 +330,33 @@ const styles = StyleSheet.create({
   },
   roundViewImg: {
     resizeMode: 'contain',
+  },
+  likeDislikeTxtView: {
+    width: constants.vw(120),
+    height: constants.vh(60),
+    borderWidth: constants.vw(3),
+    borderRadius: constants.vw(10),
+    top: constants.vh(-250),
+    start: constants.vh(5),
+    transform: [{rotate: '-50deg'}],
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  likeDislikeTxt: {
+    fontSize: constants.vw(35),
+  },
+  superLikeView: {
+    width: constants.vw(190),
+    height: constants.vh(60),
+    borderWidth: constants.vw(3),
+    borderRadius: constants.vw(10),
+    borderColor: constants.colors.dark_blue,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    transform: [{rotate: '20deg'}],
+    top: constants.vh(-250),
+    start: constants.vh(60),
   },
 });
 
@@ -377,4 +483,11 @@ const userData = [
   },
 ];
 
-export default BrowseScreen;
+const mapStateToProps = (state: any) => ({
+  mode: state.auth.saveMode,
+  filterLoginUserData: state.dashboard.filterLoginUserData,
+  filtersignupUserData: state.dashboard.filtersignupUserData,
+});
+
+const mapDispatchToProps = {};
+export default connect(mapStateToProps, mapDispatchToProps)(BrowseScreen);

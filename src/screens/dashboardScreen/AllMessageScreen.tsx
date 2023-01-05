@@ -25,6 +25,7 @@ const AllMessageScreen = (props: props) => {
   const [message, setMessage] = useState('');
   const [filteredDataSource, setFilteredDataSource] = useState<any[]>([]);
   const [masterDataSource, setMasterDataSource] = useState<any[]>([]);
+  const [refreshing, setrefreshing] = useState(false);
 
   useEffect(() => {
     setFilteredDataSource(
@@ -94,7 +95,23 @@ const AllMessageScreen = (props: props) => {
   //     </TouchableOpacity>
   //   );
   // };
-
+  
+  const onRefresh = () => {
+    setrefreshing(true);
+    setFilteredDataSource(
+      props.mode === 'login'
+        ? props.filterLoginUserData
+        : props.filtersignupUserData,
+    );
+    setMasterDataSource(
+      props.mode === 'login'
+        ? props.filterLoginUserData
+        : props.filtersignupUserData,
+    );
+    setTimeout(() => {
+      setrefreshing(false);
+    }, 2000);
+  };
   return (
     <SafeAreaView style={styles.container}>
       <CustomHeader
@@ -120,6 +137,8 @@ const AllMessageScreen = (props: props) => {
       />
       <FlatList
         style={{padding: constants.vh(10)}}
+        refreshing={refreshing}
+        onRefresh={onRefresh}
         contentContainerStyle={{paddingBottom: constants.vh(18)}}
         data={filteredDataSource}
         showsVerticalScrollIndicator={false}

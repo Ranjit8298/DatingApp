@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect} from 'react';
+import React, {useState, useCallback, useEffect, useLayoutEffect} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -45,35 +45,31 @@ const SingleUserMessageScreen = (props: props) => {
   const signupUserId = props.saveSingleUserSignUpDetails[0]?.userId;
 
   const myUserId = props.mode === 'login' ? userId : signupUserId;
-  // console.log('senderUserId===>', `${userFirstName} === ${senderUserId}`);
+  const receiverUerId = userMessageId ? userMessageId : userIdMatch;
 
-  useEffect(() => {
-    // const messageData = {
-    //   _id: 1,
-    //   text: 'Hello Developer',
-    //   createdAt: new Date(),
-    //   user: {
-    //     _id: userMessageId ? userMessageId : userIdMatch,
-    //     name: userMessageName ? userMessageName : userNameMatch,
-    //   },
-    // };
-    // setMessages([messageData]);
-    const querySnapShot = firestore()
-      .collection('chats')
-      .doc('123456789')
+  console.log('messages==>', messages);
+
+  const getAllMessages = async () => {
+    const msgResponse = await firestore()
+      .collection('chats_room')
+      .doc(myUserId + '+' + receiverUerId)
       .collection('messages')
-      .orderBy('createdAt', 'desc');
-    querySnapShot.onSnapshot(snapShot => {
-      const allMessages = snapShot.docs.map(snap => {
-        return {...snap.data(), createdAt: new Date()};
-      });
-      setMessages(allMessages);
+      .orderBy('createdAt', 'desc')
+      .get();
+    const allTheMsgs = msgResponse.docs.map(docSanp => {
+      return {
+        ...docSanp.data(),
+        createdAt: docSanp.data().createdAt.toDate(),
+      };
     });
+    setMessages(allTheMsgs);
+  };
+  useEffect(() => {
+    getAllMessages();
   }, []);
 
-  const onSend = (messages: any) => {
+  const onSend = useCallback((messages: any) => {
     const msg: any = messages[0];
-    const receiverUerId = userMessageId ? userMessageId : userIdMatch;
     const myMsg = {
       ...msg,
       senderId: myUserId,
@@ -88,7 +84,7 @@ const SingleUserMessageScreen = (props: props) => {
         ...myMsg,
         createdAt: firestore.FieldValue.serverTimestamp(),
       });
-  };
+  }, []);
 
   return (
     <SafeAreaView style={styles.conatainer}>
