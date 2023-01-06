@@ -14,7 +14,12 @@ import {connect} from 'react-redux';
 import 'react-native-get-random-values';
 import {v4 as uuidv4} from 'uuid';
 import {saveUserMessage} from '../../modules/dashboard';
-import {Bubble, GiftedChat, InputToolbar} from 'react-native-gifted-chat';
+import {
+  Avatar,
+  Bubble,
+  GiftedChat,
+  InputToolbar,
+} from 'react-native-gifted-chat';
 import firestore from '@react-native-firebase/firestore';
 
 interface props {
@@ -47,7 +52,7 @@ const SingleUserMessageScreen = (props: props) => {
   const myUserId = props.mode === 'login' ? userId : signupUserId;
   const receiverUerId = userMessageId ? userMessageId : userIdMatch;
 
-  console.log('messages===>',messages);
+  console.log('messages===>', messages);
   const getAllMessages = async () => {
     const chatid =
       receiverUerId > myUserId
@@ -68,7 +73,7 @@ const SingleUserMessageScreen = (props: props) => {
     });
     setMessages(allTheMsgs);
   };
-  useEffect(() => {
+  useLayoutEffect(() => {
     getAllMessages();
   }, []);
 
@@ -129,8 +134,41 @@ const SingleUserMessageScreen = (props: props) => {
 
       <GiftedChat
         messages={messages}
-        isTyping={false}
+        isTyping={true}
         infiniteScroll={false}
+        scrollToBottom={true}
+        showAvatarForEveryMessage={true}
+        // alignTop={true}
+        isCustomViewBottom={true}
+        scrollToBottomStyle={{
+          backgroundColor: constants.colors.lightGrey,
+          opacity: 1,
+          borderColor: constants.colors.inputborderColor,
+          borderWidth: 1,
+          shadowColor: '#000',
+          shadowOffset: {width: 2, height: 1},
+          shadowOpacity: 0.8,
+          shadowRadius: 1,
+          elevation: 9,
+        }}
+        renderAvatar={props => {
+          return (
+            <Image
+              style={{
+                width: constants.vw(34),
+                height: constants.vw(34),
+                borderRadius: constants.vw(17),
+                borderWidth: 1,
+                borderColor: constants.colors.inputborderColor,
+              }}
+              source={{
+                uri: userMessageName
+                  ? `data:${userMsgFileExt};base64,${userMessageImg}`
+                  : `data:${userMatchFileExt};base64,${userImgMatch}`,
+              }}
+            />
+          );
+        }}
         textInputProps={{multiline: false, paddingTop: 8}}
         onSend={(messages: any) => onSend(messages)}
         user={{

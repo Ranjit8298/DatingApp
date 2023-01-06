@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  StatusBar,
 } from 'react-native';
 import CustomButton from '../../components/CustomButton';
 import CustomInputBox from '../../components/CustomInputBox';
@@ -35,12 +36,12 @@ const BasicInformationScreen = (props: props) => {
 
   const currentDate = new Date(date).toISOString();
   const getFormetedDate = moment(currentDate).utc().format('YYYY-MM-DD');
- 
+
   const getOldYear = new Date(getFormetedDate).getFullYear();
 
   const getCurrentYear = new Date().getFullYear();
   const getUserAge: any = getCurrentYear - getOldYear;
-  
+
   const saveBasicInfoData = () => {
     database()
       .ref(props.saveNewReference)
@@ -238,7 +239,7 @@ const styles = StyleSheet.create({
   },
   circleView: {
     width: constants.vw(200),
-    height: constants.vh(200),
+    height: constants.vw(200),
     borderRadius: constants.vw(100),
     backgroundColor: constants.colors.white,
     opacity: 0.3,

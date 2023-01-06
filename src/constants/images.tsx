@@ -41,5 +41,6 @@ export default {
     voiceIcon: require('../assets/images/voice.png'),
     imageIcon: require('../assets/images/image.png'),
     removeIcon: require('../assets/images/remove.png'),
+    addIcon: require('../assets/images/add.png'),
   };
   

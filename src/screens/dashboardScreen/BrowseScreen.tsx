@@ -205,7 +205,7 @@ const BrowseScreen = (props: props) => {
                   height: constants.vh(30),
                   resizeMode: 'cover',
                 }}
-                source={constants.images.heartImg}
+                source={constants.images.addIcon}
               />
             </TouchableOpacity>
 

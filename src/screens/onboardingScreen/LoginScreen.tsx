@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
   },
   circleView: {
     width: constants.vw(200),
-    height: constants.vh(200),
+    height: constants.vw(200),
     borderRadius: constants.vw(100),
     backgroundColor: constants.colors.white,
     opacity: 0.3,

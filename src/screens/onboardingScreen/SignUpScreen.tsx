@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  ScrollView,
 } from 'react-native';
 import CustomButton from '../../components/CustomButton';
 import CustomInputBox from '../../components/CustomInputBox';
@@ -28,7 +29,7 @@ interface props {
 const SignUpScreen = (props: props) => {
   const [mobile, setMobile] = useState('');
   const [allUserData, saveAllUserData] = useState<any[]>([]);
-
+  
   React.useEffect(() => {
     getDataFromFirebase();
   }, []);
@@ -71,75 +72,66 @@ const SignUpScreen = (props: props) => {
       saveSignUpData();
       props.saveMode('signup');
       props.saveMobileNumber(mobile);
-      // allUserData.map((user: any) => {
-      //   if (user.userMobileNumber !== mobile) {
-      //     props.navigation.navigate('OtpScreen', {mobile: mobile});
-      //     setMobile('');
-      //     saveSignUpData();
-      //     props.saveMode('signup');
-      //     props.saveMobileNumber(mobile);
-      //   } else {
-      //     CommonFunction.isToast('error', 'You are already register with us.');
-      //   }
-      // });
     }
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <CustomBackButton
-        onPress={() => {
-          props.navigation.goBack();
-        }}
-      />
-      <View style={styles.circleView} />
-      <View
-        style={{
-          ...styles.circleView,
-          top: constants.vh(-150),
-          end: constants.vh(-10),
-        }}
-      />
-      <View
-        style={{
-          ...styles.circleView,
-          top: constants.vh(-50),
-          end: constants.vh(-180),
-        }}
-      />
-      <Text style={styles.loginTxt}>{constants.string.signUp}</Text>
-
-      <CustomInputBox
-        headerTxt={constants.string.mobileNumber}
-        placeholderTxt={constants.string.enterMobileNum}
-        value={mobile}
-        onChangeText={(val: any) => setMobile(val)}
-        keyboardType="number-pad"
-        inputViewStyle={styles.inputViewStyle}
-        returnKeyType={'done'}
-        maxLength={10}
-      />
-      <View style={styles.loginView}>
-        <CustomButton
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <CustomBackButton
           onPress={() => {
-            validateSignUp();
+            props.navigation.goBack();
           }}
-          txt={constants.string.signUp.toUpperCase()}
-          btnStyle={styles.btnStyle}
         />
+        <View style={styles.circleView} />
+        <View
+          style={{
+            ...styles.circleView,
+            top: constants.vh(-150),
+            end: constants.vh(-10),
+          }}
+        />
+        <View
+          style={{
+            ...styles.circleView,
+            top: constants.vh(-50),
+            end: constants.vh(-180),
+          }}
+        />
+        <Text style={styles.loginTxt}>{constants.string.signUp}</Text>
 
-        <TouchableOpacity
-          style={styles.forgotTouchStyle}
-          activeOpacity={0.8}
-          onPress={() => {
-            props.navigation.navigate('LoginScreen');
-          }}>
-          <Text style={styles.forgotTxt}>
-            {constants.string.alreadyAMamber}
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <Image style={styles.footerImg} source={constants.images.cityImg} />
+        <CustomInputBox
+          headerTxt={constants.string.mobileNumber}
+          placeholderTxt={constants.string.enterMobileNum}
+          value={mobile}
+          onChangeText={(val: any) => setMobile(val)}
+          keyboardType="number-pad"
+          inputViewStyle={styles.inputViewStyle}
+          returnKeyType={'done'}
+          maxLength={10}
+        />
+        <View style={styles.loginView}>
+          <CustomButton
+            onPress={() => {
+              validateSignUp();
+            }}
+            txt={constants.string.signUp.toUpperCase()}
+            btnStyle={styles.btnStyle}
+          />
+
+          <TouchableOpacity
+            style={styles.forgotTouchStyle}
+            activeOpacity={0.8}
+            onPress={() => {
+              props.navigation.navigate('LoginScreen');
+            }}>
+            <Text style={styles.forgotTxt}>
+              {constants.string.alreadyAMamber}
+            </Text>
+          </TouchableOpacity>
+        </View>
+        {/* <Image style={styles.footerImg} source={constants.images.cityImg} /> */}
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -182,7 +174,7 @@ const styles = StyleSheet.create({
   },
   circleView: {
     width: constants.vw(200),
-    height: constants.vh(200),
+    height: constants.vw(200),
     borderRadius: constants.vw(100),
     backgroundColor: constants.colors.white,
     opacity: 0.3,
